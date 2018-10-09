@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %} Dating Website {% endblock %}
+{% block content %}
+
+    <h1>Coffe Mate</h1>
+
+    <h2>Connect with people</h2>
+
+    <h4> Login</h4>
+    <form action="/login" method="POST">
+
+        <div>
+          <label>Email:
+            <input type="email" name="email" required>
+          </label>
+        </div>
+
+        <div>
+          <label>Password:
+            <input type="password" name="password" required>
+          </label>
+        </div>
+
+        <div>
+          <input type="submit" value="Log In">
+        </div>
+    </form>
+
+
+    <h4> SignUp</h4>
+    <form action="/set-up" method="POST">
+
+        <div>
+          <label>First Name:
+            <input type="text" name="fname" required>
+          </label>
+        </div>
+
+        <div>
+          <label>Last Name:
+            <input type="text" name="lname" required>
+          </label>
+        </div>
+
+        <div>
+          <label>Email:
+            <input type="email" name="email" required>
+          </label>
+        </div>
+
+        <div>
+          <label>Password:
+            <input type="password" name="password" required>
+          </label>
+        </div>
+
+        <div>
+          <input type="submit" value="SignUp">
+        </div>
+    </form>
+
+{% endblock %}

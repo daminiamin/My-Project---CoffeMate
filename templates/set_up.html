@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <h1>SetUp Your Profile</h1>
+    <form action="/add-user" method="POST">
+
+        <div>
+          <label>Age:
+            <input type="number" name="age" required>
+          </label>
+        </div>
+
+        <div>
+          <label>Gender F/M
+            <input type="text" name="fm" required>
+          </label>
+        </div>
+
+        <div>
+          <label>Your City:
+            <input type="text" name="city" required>
+          </label>
+        </div>
+
+        <div>
+          <label>State:
+            <input type="text" name="state" required>
+          </label>
+        </div>
+        <div>
+          <label>Your Contact info:
+            <input type="number" name="contact" required>
+          </label>
+        </div>
+
+        <div>
+          <label>Occupation:
+            <input type="text" name="occupation" required>
+          </label>
+        </div>
+        <div>
+          <label>What's Your Hobbie:
+            <input type="text" name="hobbie" required>
+          </label>
+        </div>
+
+        <div>
+          <label>Write about yourself:
+            <textarea rows="4" cols="50" required>
+            </textarea>
+          </label>
+        </div>
+
+        <div>
+          <input type="submit" value="SignUp">
+        </div>
+    </form>
+
+{% endblock %}
