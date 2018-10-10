@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+  <link rel="stylesheet" type="text/css" href="/static/style.css">
+  <h1>Date Your Mate </h1>
+
+  <h1 class = "greet">
+    <span>Hi,{{user_info.fname}}
+      <br>
+    Nice to meet you</span>
+  </h1>
+  <form action="">
+    
+    <div>
+      <a href='/account'> Account Setting</a>
+      <a href='/profile'> Profile </a>   
+      <a href='/logout'>Logout</a>   
+      <a href='/home'>Home</a>   
+      <a href='/people'>People</a>   
+    </div>
+
+</form>
+<div>  
+<p>Search People, Connect, Talk and Meet at Caffe</p>
+</div>
+
+       
+
+{% endblock %}

@@ -4,7 +4,7 @@
   <title>{%block title%}{%endblock%}</title>
 </head>
 
-<body>
+<body id="flash">
     {% with messages = get_flashed_messages() %}
             {% if messages %}
                 <ul>

@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
 
-{% block title %} Dating Website {% endblock %}
+{% block title %} CoffeeMate{% endblock %}
 {% block content %}
-
+  
+    <link rel="stylesheet" type="text/css" href="/static/style.css">
+  <body class="bg">
     <h1>Coffe Mate</h1>
 
     <h2>Connect with people</h2>
@@ -26,8 +28,6 @@
           <input type="submit" value="Log In">
         </div>
     </form>
-
-
     <h4> SignUp</h4>
     <form action="/set-up" method="POST">
 
@@ -59,5 +59,5 @@
           <input type="submit" value="SignUp">
         </div>
     </form>
-
+</body>
 {% endblock %}

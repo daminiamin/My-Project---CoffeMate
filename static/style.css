@@ -1,0 +1,47 @@
+
+
+.bg{ 
+    /* The image used */
+    background-image: url("/static/cf.jpeg");
+
+    /* Full height */
+    height: 100%; 
+
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#flash{
+color: lightblue;
+
+}
+.color {
+    color: green;
+    font-weight: bold ;
+}
+
+h1{
+color: orange;
+
+}
+label{
+
+    color: blue;
+    font-weight: bold;
+}
+
+#firstname{
+
+   text-shadow: 3px 3px pink;
+   font-weight: bold;
+
+}
+.comp{
+
+    color: red;
+}
+.greet {
+color:purple;
+}

@@ -2,10 +2,6 @@
 
 from flask_sqlalchemy import SQLAlchemy
 
-
-# Here's where we create the idea of our database. We're getting this through
-# the Flask-SQLAlchemy library.
-
 db = SQLAlchemy()
 
 ##############################################################################
@@ -32,10 +28,14 @@ class User(db.Model):
     yourself = db.Column(db.String(200), nullable=True)
 ######### Define Relationship ############
 
-    hobbies = db.relationship(Hobbie)
-    likes = db.relationship(Like)
-    dislikes = db.relationship(Dislike)
-    images = db.relationship(Image)
+    hobbies = db.relationship('Hobbie')
+
+    # likes = db.relationship('Like', foreign_keys='likes_user_id')
+    # likers = db.relationship('Like', foreign_keys='liked_user_id')    
+    # dislikes = db.relationship('Dislike', foreign_keys='dislikes_user_id')
+    # dislikers = db.relationship('Dislike', foreign_keys='disliked_user_id')
+
+    images = db.relationship('Image')
 
     def __repr__(self):
 
@@ -61,7 +61,7 @@ class Hobbie(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
     hobbie_name = db.Column(db.String(25), nullable = False)
 #relationship
-    users = db.relationship(User)
+    user = db.relationship('User')
 
     def __repr__(self):
 
@@ -78,11 +78,12 @@ class Like(db.Model):
 
 
     like_id= db.Column(db.Integer, autoincrement = True, primary_key = True) 
-    likes_user = db.Column(db.Integer, db.ForeignKey('users.user_id'))
-    liked_user = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+    likes_user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+    liked_user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
 
-#relationship
-    users = db.relationship(User)
+    #relationship
+    likes_user = db.relationship('User', foreign_keys=[likes_user_id], backref="likes")
+    liked_user = db.relationship('User', foreign_keys=[liked_user_id], backref="liked")
 
     def __repr__(self):
 
@@ -98,11 +99,12 @@ class Dislike(db.Model):
     __tablename__ = "dislikes"
 
 
-    dislike_id= db.Column(db.Integer, autoincrement = True, primary_key = True) 
-    dislikes = db.Column(db.Integer, db.ForeignKey('users.user_id'))
-    disliked = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+    dislike_user_id= db.Column(db.Integer, autoincrement = True, primary_key = True) 
+    dislikes_user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+    disliked_user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
 #relationship
-    users = db.relationship(User)
+    dislikes_user = db.relationship('User', foreign_keys=[dislikes_user_id], backref="dislikes")
+    disliked_user = db.relationship('User', foreign_keys=[disliked_user_id], backref="disliked")
 
     def __repr__(self):
 
@@ -120,9 +122,9 @@ class Image(db.Model):
     image_id = db.Column(db.Integer, autoincrement = True, primary_key = True) 
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
     url = db.Column(db.String(200), nullable=False)
-    
+
 #relationship
-    users = db.relationship(User)
+    user = db.relationship('User')
 
     def __repr__(self):
 
@@ -147,8 +149,6 @@ def connect_to_db(app):
 
 
 if __name__ == "__main__":
-    # As a convenience, if we run this module interactively, it will leave
-    # you in a state of being able to work with the database directly.
 
     #from server import app
     from flask import Flask
