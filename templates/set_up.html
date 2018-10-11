@@ -6,13 +6,20 @@
 
         <div>
           <label>Age:
-            <input type="number" name="age" required>
+            <select name="age">
+             {% for n in range(1,100) %}
+              <option value={{n}}>{{n}}</option>
+             {% endfor %}
+            </select>         
           </label>
         </div>
 
         <div>
           <label>Gender F/M
-            <input type="text" name="fm" required>
+            <select name="gender">
+              <option value="f">F</option>
+              <option value="m">M</option> 
+            </select>   
           </label>
         </div>
 
@@ -40,9 +47,24 @@
         </div>
         <div>
           <label>What's Your Hobbie:
-            <input type="text" name="hobbie" required>
+            {% for hobbie in hobbies_info %}
+              <input type="checkbox" name="hobbie" value="{{hobbie.hobbie_id}}">{{hobbie.hobbie_name}}
+            {% endfor %}
           </label>
         </div>
+        
+      <h1>Custom Checkboxes</h1>
+      <label class="container">One
+        <input type="checkbox" checked="checked">
+        <span class="checkmark"></span>
+      </label>
+
+
+
+
+
+
+
         <div>
           <label>Write about yourself:
             <textarea rows="4" cols="50" name = "aboutme" required>

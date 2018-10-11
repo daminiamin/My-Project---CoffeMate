@@ -1,16 +1,40 @@
 {% extends 'base.html' %}
 {% block content %}
-  <link rel="stylesheet" type="text/css" href="/static/style.css">
-  <h1></h1>
-  <h3></h3>
-  <form action="">
 
-    <img class = 'image' src = "static/p.png" >
+
+  <!-- Load Bootstrap 4 -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <!-- Load Font Awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+  <!-- Load our stylesheet -->
+  <link rel="stylesheet" type="text/css" href="/static/style.css">
+
+  <h1></h1>
+  <h3>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <!-- heart home icon -->
+  </h3>
+  <form action="">
+    <button type="button" class="btn btn-outline-primary">Home</button>
+    <button type="button" class="btn btn-outline-secondary">Account</button>
+    <button type="button" class="btn btn-outline-info">Info</button>
+    <button type="button" class="btn btn-outline-dark">Logout</button>
+  </form>
+
+
+    <div class="profile_img" style="width: 18rem;">
+      <img class="card-img-top" src="static/p.png" alt="Card image cap">
+      <div class="card-body">
+        <h5 class="card-title">User1</h5>
+        <p class="card-text">Search People, Connect, Talk and Meet at Caffe</p>
+        <a href="#" class="btn btn-primary">See profile</a>
+      </div>
+    </div>
+    <!-- profile suggestion -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <!-- heart icon -->
     <br>
     <br>
-        
-    </form>
-    <div>
     <div>
   
       <a href='/account'> Account Setting</a>
@@ -20,11 +44,20 @@
       <a href='/people'>People</a>   
     </div>
 
-</form>
+    <form>
+      <div class="form-group">
+        <label for="exampleFormControlFile1">Example file input</label>
+        <input type="file" class="form-control-file" id="exampleFormControlFile1">
+      </div>
+    </form>
+    <!-- input file -->
+  </form>
 <div>  
-<p>Search People, Connect, Talk and Meet at Caffe</p>
 </div>
 
-       
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+ 
 
 {% endblock %}

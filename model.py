@@ -5,7 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
 ##############################################################################
-# Model definitions
+    # Model definitions
 
 
 class User(db.Model):
@@ -26,9 +26,10 @@ class User(db.Model):
     contact_no = db.Column(db.String(10), nullable = False)
     occupation = db.Column(db.String(25), nullable=False)
     yourself = db.Column(db.String(200), nullable=True)
-######### Define Relationship ############
 
-    hobbies = db.relationship('Hobbie')
+    ######### Define Relationship ############
+
+    hobbies = db.relationship('Hobbie', secondary="user_hobbies", backref="users")
 
     # likes = db.relationship('Like', foreign_keys='likes_user_id')
     # likers = db.relationship('Like', foreign_keys='liked_user_id')    
@@ -40,7 +41,7 @@ class User(db.Model):
     def __repr__(self):
 
         """ Provide helpful representation when printed """
-        us = f"""<Human user_id = {self.user_id} 
+        us = f"""< User user_id = {self.user_id} 
                         fname = {self.fname}
                         lname = {self.lname}
                         email = {self.email}
@@ -57,19 +58,42 @@ class Hobbie(db.Model):
 
     __tablename__ = "hobbies"
 
-    hobbie_id = db.Column(db.Integer, autoincrement = True, primary_key = True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
-    hobbie_name = db.Column(db.String(25), nullable = False)
-#relationship
-    user = db.relationship('User')
+    hobbie_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    # user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+    hobbie_name = db.Column(db.String(25),unique=True, nullable=False)
+    #relationship
+    # user = db.relationship('User')
 
     def __repr__(self):
 
         """ Provide helpful representation when printed """
-        hb = f"""<Human  hobbie_id ={self.hobbie_id}
-                        user_id ={self.user_id} 
-                        hobbie_name={self.hobbie_name}>"""
+        hb = f"""<Hobbie    hobbie_id ={self.hobbie_id}
+                    
+                            hobbie_name={self.hobbie_name}>"""
+                        #user_id ={self.user_id} 
         return hb
+
+class User_Hobbies(db.Model):
+    """User Hobbie model of dating website"""
+
+    __tablename__ = "user_hobbies"
+
+    user_hobbie_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    hobbie_id = db.Column(db.Integer,db.ForeignKey('hobbies.hobbie_id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+    
+
+    #relationship
+    user = db.relationship('User')
+    hobbie = db.relationship('Hobbie')
+
+
+    def __repr__(self):
+
+        """ Provide helpful representation when printed """
+        uhb = f"""<User_hobbie  hobbie_id ={self.hobbie_id}
+                                user_id ={self.user_id} >"""
+        return uhb
 
 class Like(db.Model):
     """like model of dating website"""
@@ -88,7 +112,7 @@ class Like(db.Model):
     def __repr__(self):
 
         """ Provide helpful representation when printed """
-        lk = f"""<Human  like_id ={self.like_id}
+        lk = f"""<like  like_id ={self.like_id}
                         likes_user ={self.likes_user} 
                         liked_user={self.liked_user}>"""
         return lk
@@ -102,16 +126,16 @@ class Dislike(db.Model):
     dislike_user_id= db.Column(db.Integer, autoincrement = True, primary_key = True) 
     dislikes_user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
     disliked_user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
-#relationship
+    #relationship
     dislikes_user = db.relationship('User', foreign_keys=[dislikes_user_id], backref="dislikes")
     disliked_user = db.relationship('User', foreign_keys=[disliked_user_id], backref="disliked")
 
     def __repr__(self):
 
         """ Provide helpful representation when printed """
-        dl = f"""<Human  dislike_id ={self.dislike_id}
-                        dislikes ={self.dislikes} 
-                        disliked={self.disliked}>"""
+        dl = f"""<Dislike   dislike_id ={self.dislike_user_id}
+                            dislikes ={self.dislikes_user} 
+                            disliked={self.disliked_user}>"""
         return dl
 
 class Image(db.Model):
@@ -123,19 +147,19 @@ class Image(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
     url = db.Column(db.String(200), nullable=False)
 
-#relationship
+    #relationship
     user = db.relationship('User')
 
     def __repr__(self):
 
         """ Provide helpful representation when printed """
-        im = f"""<Human  image_id ={self.image_id}
+        im = f"""<Image  image_id ={self.image_id}
                         user_id ={self.user_id} 
                         url={self.url}>"""
         return im
 
 ##############################################################################
-# Helper functions
+    # Helper functions
 
 def connect_to_db(app):
     """Connect the database to our Flask app."""
