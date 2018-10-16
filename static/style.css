@@ -1,13 +1,10 @@
-.bg{ 
+.bgland{ 
     /* The image used */
     background-image: url("/static/cf.jpeg");
 
     /* Full height */
-    height: 100%; 
 
     /* Center and scale the image nicely */
-    background-position: center;
-    background-repeat: no-repeat;
     background-size: cover;
 }
 
@@ -15,15 +12,12 @@
 color: lightblue;
 
 }
-.color {
-    color: green;
-    font-weight: bold ;
-}
 
 h1{
 color: orange;
 
 }
+
 label{
 
     color: silver;
@@ -36,57 +30,16 @@ label{
    font-weight: bold;
 
 }
-.comp{
 
-    color: red;
-}
 .greet {
 color:purple;
 }
 
+#profile{
 
-
-/*   Sitewide  */
-
-.navbar {
-    background-color: #b4c157;
-    color: white;
-    border-radius: 0px;
+    color: royalblue;
 }
 
-#ubermelon-logo, #ubermelon-logo:hover, .navbar-dark .navbar-brand {
-    color: #151515;
-}
-
-.navbar-nav>li>a, .navbar-dark .navbar-nav .nav-link {
-    color: white;
-}
-
-section {
-    margin-top: 50px;
-}
-
-
-/*  First row  */
-
-#hero   {
-    height: 400px;
-}
-
-#splash {
-    margin-bottom: 25px;
-    font-size: 18px;
-}
-
-
-/* Features Row */
-
-.feature {
-    text-align: center;
-}
-
-/* Further Study */
-
-#modalLabel {
-    color: black;
+#Suggestions{
+    color: lightseagreen;
 }

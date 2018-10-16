@@ -21,6 +21,7 @@ class User(db.Model):
     password= db.Column(db.String(25), nullable= False)
     age     = db.Column(db.Integer, nullable = False)
     gender= db.Column(db.String(1), nullable = False)
+    interested_in = db.Column(db.String(1), nullable = False)
     city    = db.Column(db.String(25), nullable = False)
     state =db.Column(db.String(25), nullable = False)
     contact_no = db.Column(db.String(10), nullable = False)
@@ -48,6 +49,7 @@ class User(db.Model):
                         password = {self.password}
                         age = {self.age}
                         gender = {self.gender}
+                        interested_in = {self.interested_in}
                         city={self.city}
                         state={self.state}
                         contact_no={self.contact_no}>"""

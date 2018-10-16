@@ -1,38 +1,45 @@
 {% extends 'base.html' %}
 {% block content %}
 
+    <form>
+      <div class="form-group">
+        <label for="exampleFormControlFile1">Example file input</label>
+        <input type="file" class="form-control-file" id="exampleFormControlFile1">
+      </div>
+    </form>
 
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-  <!-- Load Font Awesome -->
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
-  <!-- Load our stylesheet -->
-  <link rel="stylesheet" type="text/css" href="/static/style.css">
-  
-  <h1>Date Your Mate </h1>
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
-    <!-- heart home icon -->
+    <!-- input file -->
+
+    <form class="logout" action="\logout">
+      <input type="submit" value="logout" class="btn btn-outline-dark">Logout
+    </form>
   <h1 class = "greet">
     <span>Hi,{{user_info.fname}}
       <br>
     Nice to meet you</span>
   </h1>
-  <form action="">
-    
-    <div>
-      <a href='/account'>Account Setting</a>
-      <a href='/profile'>Profile </a>   
-      <a href='/logout'>Logout</a>   
-      <a href='/home'>Home</a>   
-      <a href='/people'>People</a>   
-    </div>
-
+  <form action="/profile">
+   <div>
+          <label id = "Suggestions">Suggestions
+            {% for person in get_allobjects %}
+              <li><div style="width: 18rem;">
+                    <img src="/" class="p" alt="image">
+                    <div class="card-body">
+                      <h5 class="card-title">{{person.fname}}</h5>
+                      <p class="card-text">{{person.lname}}
+                                          {{person.city}}
+                                          {{person.age}}</p>
+                      <a href="/profile/{{person.user_id}}" class="btn btn-primary">Visit profile</a>
+                    </div>
+                  </div>
+                   
+              </li>
+            {% endfor %}
+          </label>
+        </div>
 </form>
 <div>  
 <p>Search People, Connect, Talk and Meet at Caffe</p>
 </div>
-
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>       
 
 {% endblock %}
