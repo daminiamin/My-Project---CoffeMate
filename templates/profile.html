@@ -28,8 +28,7 @@
         <p>{{user_info.hobbie}}</p>
 
         <p>{{user_info.yourself}}</p>
-
-
+        
         <p class="card-text">Search People, Connect, Talk and Meet at Caffe</p>
       </div>
     </div>
@@ -38,15 +37,25 @@
       id="like"
       data-liked-user-id='{{ user_info.user_id }}'
       type="button"
-      class="btn btn-outline-info">Like</button>
+      class="btn btn-outline-info{% if status == 'liked' %} liked{% endif %}">Like</button>
     
     <button
       id="dislike"
       data-disliked-user-id='{{ user_info.user_id }}'
       type="button"
-      class="btn btn-outline-info">Dislike</button>
+      class="btn btn-outline-info{% if status == 'disliked' %} disliked{% endif %}">Dislike</button>
+
+    <!-- Show contact of user -->
+    <p>{% if matched == 'matched' %} {{user_info.contact_no}} {% endif %}</p>
+
 
   <script>
+
+  // TODO:
+  // right away, make a get request to the server to determine if this user likes this person
+  // update the like or dislike button to show this info
+
+
   "use strict";
 
   let likeButton = $('#like');
@@ -55,6 +64,9 @@
   function logResult(data) {
     console.log(data);
   }
+  // check data for status if stastus is ok update the classes
+  // check data for liked back and if it's true then get phoneno and display it
+  
 
   function processLikedclick() {
     if (likeButton.hasClass('liked')) {
@@ -93,10 +105,6 @@
   dislikeButton.on('click', processDislikedclick);
 
 
-  // TODO:
-  // right away, make an get request to the server to determine if this user likes this person
-  // update the like or dislike button to show this info
-  // get reqst 
   </script>
 
 {% endblock %}

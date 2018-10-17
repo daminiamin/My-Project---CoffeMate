@@ -1,10 +1,12 @@
 """Sample Flask app for SQLAlchemy homework."""
 
 from jinja2 import StrictUndefined
-
-from flask import Flask, render_template,request,flash,redirect,session
+import os
+import json
+from flask import Flask, render_template,jsonify,request,flash,redirect,session
 from flask_debugtoolbar import DebugToolbarExtension
 from random import sample
+from werkzeug.utils import secure_filename
 from model import connect_to_db,db,User,Hobbie,User_Hobbies,Like,Dislike,Image
 
 app = Flask(__name__)
@@ -141,16 +143,43 @@ def homepage():
     return render_template("homepage.html", user_info=user_info,
                                             get_allobjects=all_interest_users)
 
+                                                                                # like/unlike         dislike/undislike
 
+                                                                                # if user liked already
+                                                                                # if user disliked already
+                                                                                # if user unlike already
+                                                                                # if User disunliked already
 @app.route('/profile/<int:user_id>')
 def profile(user_id):
     """Show the user profile for that user."""
 
+    c_user_id = session["user_id"] #current user info
+
     another_user_info = User.query.get(user_id)
+    # checking user in like
+    liked_in_like = Like.query.filter_by(likes_user_id=c_user_id , liked_user_id=user_id).first()
+    # checking user in dislike
+    disliked_in_dislike = Dislike.query.filter_by(dislikes_user_id=c_user_id , disliked_user_id=user_id).first()
+    
+    # checking user liked back
+    liked_back = Like.query.filter_by(likes_user_id=user_id,liked_user_id=c_user_id).first()
 
-    # user_info = User.query.filter_by(user_id=user_id).first()
 
-    return render_template("profile.html", user_info=another_user_info)
+    if liked_in_like:
+        status = 'liked'
+    elif disliked_in_dislike:
+        status = 'disliked'
+    else:
+        status = None
+
+    if liked_back and liked_in_like:
+        matched = 'matched'
+    else:
+        matched = None
+
+
+    return render_template("profile.html", user_info=another_user_info, 
+                                        status = status, matched = matched )
 
 
 @app.route('/logout')
@@ -195,7 +224,6 @@ def like():
 
     return "OK"
 ############## UNLIKE ############################
-
 @app.route('/unlike', methods=['POST'])
 def unlike():
     """ unliking user by saving into database """
@@ -215,7 +243,7 @@ def unlike():
     db.session.commit()
     return "OK"
 
-############## DISLIKE ############################
+############## DISLIKE ############################ 
 
 @app.route('/dislike', methods=["POST"])
 def dislike():
@@ -244,7 +272,6 @@ def dislike():
     return "OK"
 
 ############## UNDISLIKE ############################
-
 @app.route('/undislike', methods=['POST'])
 def undislike():
     """ undisliking user by saving into database """

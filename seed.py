@@ -66,18 +66,11 @@ def load_users():
     hobbie4 = Hobbie(hobbie_name="drawing")
     hobbie5 = Hobbie(hobbie_name="knitting")
 
-    # hobbie1 = Hobbie(user=deepika,hobbie_name="singing")
-    # hobbie2 = Hobbie(user=ranvir,hobbie_name="dancing")
-    # hobbie3 = Hobbie(user=akshay,hobbie_name="drawing")
-    # hobbie4 = Hobbie(user=esha,hobbie_name="cooking")
-
     db.session.add_all([hobbie1, hobbie2, hobbie3,hobbie4,hobbie5])
     db.session.commit()
     
-    # hobbie4 = Hobbie.query.get(4)
 
-
-    deepika.hobbies.append(hobbie4)
+    deepika.hobbies.extend([hobbie4])
     ranvir.hobbies.append(hobbie4)
     akshay.hobbies.append(hobbie4)
     esha.hobbies.append(hobbie3)
@@ -87,23 +80,6 @@ def load_users():
     deepika.hobbies.append(hobbie5)
 
 
-    # user_hobbie1 = User_Hobbies(hobbie_id=hobbie4,user_id=deepika)
-    # user_hobbie2 = User_Hobbies(hobbie_id=hobbie3,user_id=ranvir)
-    # user_hobbie3 = User_Hobbies(hobbie_id=hobbie1,user_id=akshay)
-    # user_hobbie4 = User_Hobbies(hobbie_id=hobbie1,user_id=esha)
-    # user_hobbie5 = User_Hobbies(hobbie_id=hobbie3,user_id=esha)
-    # user_hobbie6 = User_Hobbies(hobbie_id=hobbie3,user_id=akshay)
-
-    # user_hobbie1 = User_Hobbies(user=deepika,hobbie_name=hobbie4)
-    # user_hobbie2 = User_Hobbies(user=ranvir,hobbie_name=hobbie3)
-    # user_hobbie3 = User_Hobbies(user=akshay,hobbie_name=hobbie1)
-    # user_hobbie4 = User_Hobbies(user=esha,hobbie_name=hobbie1)
-    # user_hobbie5 = User_Hobbies(user=esha,hobbie_name=hobbie3)
-    # user_hobbie6 = User_Hobbies(user=akshay,hobbie_name=hobbie3)
-
-    
-    # db.session.add_all([user_hobbie1,user_hobbie2,user_hobbie3,user_hobbie4
-                        # user_hobbie5,user_hobbie6])
     db.session.commit()
     # deepika.likes.append(hrithik)
     like1 = Like(likes_user = deepika,liked_user=hrithik)
