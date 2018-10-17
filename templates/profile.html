@@ -1,21 +1,20 @@
 {% extends 'base.html' %}
 {% block content %}
  
-  <h1></h1>
-  <h3>
-
-  </h3>
-      <a href="/homepage">
-        <button type="button" class="btn btn-outline-primary">Home</button>
-      </a>
-      <!-- TODO: make account route -->
-      <a href="/account"> 
-        <button type="button" class="btn btn-outline-secondary">Account</button>
-      </a>
-      <!-- TODO: make info route -->
-      <a href="/info">
-        <button type="button" class="btn btn-outline-info">Info</button>
-      </a>
+    <a href="/homepage">
+      <button type="button" class="btn btn-outline-primary">Home</button>
+    </a>
+    <!-- TODO: make account route -->
+    <a href="/account"> 
+      <button type="button" class="btn btn-outline-info">Account</button>
+    </a>
+    <!-- TODO: make info route -->
+    <a href="/info">
+      <button type="button" class="btn btn-outline-secondary">Info</button>
+    </a>
+    <a href="/logout">
+      <button type="button" class="btn btn-outline-info">Logout</button>
+    </a>
 
 
 
@@ -34,49 +33,70 @@
         <p class="card-text">Search People, Connect, Talk and Meet at Caffe</p>
       </div>
     </div>
-    <button id="like" type="button" class="btn btn-outline-info">Like</button>
-    <button id="dislike" type="button" class="btn btn-outline-info">Dislike</button>
-    <button id="neutral" type="button" class="btn btn-outline-info">Neutral</button>
+    
+    <button
+      id="like"
+      data-liked-user-id='{{ user_info.user_id }}'
+      type="button"
+      class="btn btn-outline-info">Like</button>
+    
+    <button
+      id="dislike"
+      data-disliked-user-id='{{ user_info.user_id }}'
+      type="button"
+      class="btn btn-outline-info">Dislike</button>
 
   <script>
   "use strict";
 
   let likeButton = $('#like');
   let dislikeButton = $('#dislike');
-  let neutralButton = $('#neutral');
 
-
-  function like_user() {
-    // turn the button green
-    // post request to server to add record to Likes table
-    // ALSO! on the server, make sure we delete from Dislikes table
-    // (if necessary)
-    // turn all the other buttons gray
-    // add message: you like this user
+  function logResult(data) {
+    console.log(data);
   }
 
-  function dislike_user() {
-    // turn the button green
-    // post request to server to add record to Dislikes table
-    // ALSO! on the server, make sure we delete from Likes table
-    // (if necessary)
-    // turn all the other buttons gray
-    // add message: you dislike this user
+  function processLikedclick() {
+    if (likeButton.hasClass('liked')) {
+      // unlike
+      likeButton.removeClass('liked');
+      $.post('/unlike', likeButton.data(), logResult); // data looks like this... {likedUserId: 9}
+    } else {
+      // like
+      likeButton.addClass("liked");
+      $.post('/like', likeButton.data(), logResult);
+      dislikeButton.removeClass("disliked");
+    }
   }
 
-  function neutral_user() {
-    // turn the button green
-    // post request to server to delete record from Likes table
-    // and delete from Dislikes table
-    // (if necessary)
-    // turn all the other buttons gray
-    // add message: you are neutral toward this user
+  likeButton.on('click', processLikedclick);
+
+
+  function processDislikedclick() { // data looks like this... {dislikedUserId: 9}
+    if (dislikeButton.hasClass('disliked')){
+
+      // undislike
+      dislikeButton.removeClass('disliked');
+
+      // ajax post request to server including id of user profile
+      $.post('/undislike',dislikeButton.data(),logResult);
+
+    } else{
+      // dislike
+      dislikeButton.addClass('disliked');
+      $.post('/dislike',dislikeButton.data(),logResult);
+      likeButton.removeClass("liked");
+    }
+
   }
 
-  likeButton.on("click",like_user);
-  dislikeButton.on...
-  neutralButton.on...
+  dislikeButton.on('click', processDislikedclick);
 
+
+  // TODO:
+  // right away, make an get request to the server to determine if this user likes this person
+  // update the like or dislike button to show this info
+  // get reqst 
   </script>
 
 {% endblock %}

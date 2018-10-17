@@ -8,6 +8,14 @@
     background-size: cover;
 }
 
+.liked {
+    background-color: red;
+}
+
+.disliked {
+    background-color: red;
+}
+
 #flash{
 color: lightblue;
 
