@@ -8,6 +8,9 @@
     background-size: cover;
 }
 
+#phone{
+    display: none;
+}
 .liked {
     background-color: red;
 }

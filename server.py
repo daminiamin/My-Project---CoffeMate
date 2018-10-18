@@ -182,13 +182,13 @@ def profile(user_id):
         status = None
 
     if liked_back and liked_in_like:
-        matched = 'matched'
+        matched = True
     else:
-        matched = None
+        matched = False
 
 
     return render_template("profile.html", user_info=another_user_info, 
-                                        status = status, matched = matched )
+                                        status = status ,matched = matched)
 
 
 @app.route('/logout')
@@ -230,12 +230,15 @@ def like():
     liked_back = Like.query.filter_by(likes_user_id=liked_user_id,liked_user_id=user_id).first()
     if liked_back:
         liked_back = True
+    else:
+        liked_back = False
 
-    phone = # Query User table by liked_user_id to get phone number
+    # Query User table by liked_user_id to get phone number
+    phone = db.session.query(User.contact_no).filter_by(user_id = liked_user_id).first()
 
     return jsonify({'status': 'ok', 'liked_back': liked_back, 'phone_num': phone})
 
-   
+
 ############## UNLIKE ############################
 @app.route('/unlike', methods=['POST'])
 def unlike():
