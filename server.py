@@ -9,8 +9,14 @@ from random import sample
 from werkzeug.utils import secure_filename
 from model import connect_to_db,db,User,Hobbie,User_Hobbies,Like,Dislike,Image
 
+UPLOAD_FOLDER = '/static/uploads'
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
+
+
+
 app = Flask(__name__)
-app.secret_key = 'ABCSECRETDEF'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.secret_key = 'DK'
 
 
 @app.route('/', methods=['GET']) #GET
@@ -63,7 +69,7 @@ def set_up():
         session["email"]=email
         session["password"]=password
 
-        flash("SingUp ")
+        flash("SignUp ")
 
         hobbies_info = Hobbie.query.all()
         # query the database to get all hobbie objects from the Hobbie table
@@ -85,6 +91,7 @@ def add_user():
     hobbies = request.form.getlist("hobbie") 
         #getting list of hobbies from user 
     aboutme = request.form["aboutme"]
+    # upload = 
 
     new_user = User(fname=session['fname'], lname = session["lname"],
                     email= session["email"],password =session["password"],
@@ -127,7 +134,8 @@ def homepage():
     current_user_hobbies = [hobbie.hobbie_id for hobbie in user_info.hobbies]
 
     # join with user hobbies and select only users where the hobbies in list
-    all_interest_users = User.query.join(User_Hobbies).filter((User.gender == user_info.interested_in),
+    all_interest_users = User.query.join(User_Hobbies).filter(
+                                (User.gender == user_info.interested_in),
                                 User_Hobbies.hobbie_id.in_(current_user_hobbies),
                                 User.user_id.notin_(list(excluded_ids))).all()
     #macthing interested_in current user 
@@ -159,7 +167,8 @@ def profile(user_id):
     # checking user in like
     liked_in_like = Like.query.filter_by(likes_user_id=c_user_id , liked_user_id=user_id).first()
     # checking user in dislike
-    disliked_in_dislike = Dislike.query.filter_by(dislikes_user_id=c_user_id , disliked_user_id=user_id).first()
+    disliked_in_dislike = Dislike.query.filter_by(dislikes_user_id=c_user_id , 
+                                                disliked_user_id=user_id).first()
     
     # checking user liked back
     liked_back = Like.query.filter_by(likes_user_id=user_id,liked_user_id=c_user_id).first()
@@ -184,17 +193,11 @@ def profile(user_id):
 
 @app.route('/logout')
 def logout():
-    """logout profile page"""
+    """logout page"""
 
 
     session.pop('user_id')
     return redirect("/")
-
-    # user = SessionUser.find_by_session_id(user_id) #hits the database
-    # if user is None:
-    #     flash('You have been automatically logged out')
-    #     session['user_id'] = None
-    # return user
 
 ############## LIKE ############################
 @app.route('/like', methods=['POST'])
@@ -206,7 +209,8 @@ def like():
     liked_user_id = int(request.form.get('likedUserId'))#liked user id
 
     # query Like table to see if this user has already liked the person
-    liked_in_like = Like.query.filter_by(likes_user_id=user_id , liked_user_id=liked_user_id).first()
+    liked_in_like = Like.query.filter_by(likes_user_id=user_id , 
+                                            liked_user_id=liked_user_id).first()
 
     if not liked_in_like:
         # adding liked user to like table
@@ -214,7 +218,8 @@ def like():
         db.session.add(add_liked_user)
 
     # check liked user exist in dislike table DB
-    liked_in_dislike = Dislike.query.filter_by(dislikes_user_id=user_id , disliked_user_id=liked_user_id).first()
+    liked_in_dislike = Dislike.query.filter_by(dislikes_user_id=user_id , 
+                                        disliked_user_id=liked_user_id).first()
 
     if liked_in_dislike:
         # delete record from dislike table
@@ -222,7 +227,15 @@ def like():
     
     db.session.commit()
 
-    return "OK"
+    liked_back = Like.query.filter_by(likes_user_id=liked_user_id,liked_user_id=user_id).first()
+    if liked_back:
+        liked_back = True
+
+    phone = # Query User table by liked_user_id to get phone number
+
+    return jsonify({'status': 'ok', 'liked_back': liked_back, 'phone_num': phone})
+
+   
 ############## UNLIKE ############################
 @app.route('/unlike', methods=['POST'])
 def unlike():
@@ -233,7 +246,8 @@ def unlike():
     unliked_user_id = int(request.form.get('likedUserId'))#unliked user id
 
     # check if unliked user in like tbl
-    unliked_in_like =Like.query.filter_by(likes_user_id=user_id, liked_user_id=unliked_user_id).first()
+    unliked_in_like =Like.query.filter_by(likes_user_id=user_id, 
+                                            liked_user_id=unliked_user_id).first()
 
     
     if unliked_in_like:
@@ -254,7 +268,8 @@ def dislike():
     disliked_user_id = int(request.form.get('dislikedUserId')) 
 
     # Check to see if this user already dislikes the person
-    disliked_in_dislike = Dislike.query.filter_by(dislikes_user_id=user_id , disliked_user_id=disliked_user_id).first()
+    disliked_in_dislike = Dislike.query.filter_by(dislikes_user_id=user_id , 
+                                    disliked_user_id=disliked_user_id).first()
 
     if not disliked_in_dislike:
         # adding disliked user to Dislike table
@@ -262,7 +277,8 @@ def dislike():
         db.session.add(add_disliked_user)
 
     # check disliked user in likes tbl
-    disliked_in_like = Like.query.filter_by(likes_user_id=user_id, liked_user_id=disliked_user_id).first()
+    disliked_in_like = Like.query.filter_by(likes_user_id=user_id, 
+                                        liked_user_id=disliked_user_id).first()
 
     if disliked_in_like:
         # delete record from like table

@@ -46,38 +46,43 @@
       class="btn btn-outline-info{% if status == 'disliked' %} disliked{% endif %}">Dislike</button>
 
     <!-- Show contact of user -->
-    <p>{% if matched == 'matched' %} {{user_info.contact_no}} {% endif %}</p>
+    <p id="phone">{% if matched == 'matched' %} {{user_info.contact_no}} {% endif %}</p>
 
 
   <script>
 
-  // TODO:
-  // right away, make a get request to the server to determine if this user likes this person
-  // update the like or dislike button to show this info
-
-
+  
   "use strict";
 
   let likeButton = $('#like');
   let dislikeButton = $('#dislike');
+  let phone = $('#phone');
 
-  function logResult(data) {
+  function likeResult(data) {
     console.log(data);
+    likeButton.addClass("liked");
+    dislikeButton.removeClass("disliked");
+    // if liked_back is true, phone.html( PHONE NUMBER HERE ) and phone.show();
   }
-  // check data for status if stastus is ok update the classes
-  // check data for liked back and if it's true then get phoneno and display it
   
+  function unlikeResult(data) {
+    likeButton.removeClass('liked');
+    console.log(data)
+    phone.hide();
+  }
+
+  // TODO:
+  // check data for status if status is ok update the classes
+  // check data for liked back and if it's true then get phoneno and display it
 
   function processLikedclick() {
     if (likeButton.hasClass('liked')) {
       // unlike
-      likeButton.removeClass('liked');
-      $.post('/unlike', likeButton.data(), logResult); // data looks like this... {likedUserId: 9}
+      $.post('/unlike', likeButton.data(), unlikeResult); // data looks like this... {likedUserId: 9}
     } else {
       // like
-      likeButton.addClass("liked");
-      $.post('/like', likeButton.data(), logResult);
-      dislikeButton.removeClass("disliked");
+      $.post('/like', likeButton.data(), likeResult);
+           // route, data from button(id), callback()
     }
   }
 
@@ -91,13 +96,16 @@
       dislikeButton.removeClass('disliked');
 
       // ajax post request to server including id of user profile
-      $.post('/undislike',dislikeButton.data(),logResult);
+      $.post('/undislike',dislikeButton.data(), function(data) { console.log(data); });
 
     } else{
       // dislike
       dislikeButton.addClass('disliked');
-      $.post('/dislike',dislikeButton.data(),logResult);
+      $.post('/dislike',dislikeButton.data(), unlikeResult);
+            // route, data from button(id), callback()
+
       likeButton.removeClass("liked");
+      phone.hide();
     }
 
   }
