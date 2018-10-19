@@ -17,27 +17,31 @@ class User(db.Model):
     user_id = db.Column(db.Integer, autoincrement = True, primary_key = True)
     fname   = db.Column(db.String(25), nullable = False)
     lname   = db.Column(db.String(25), nullable = False)
-    email   = db.Column(db.String(100), nullable = False)
+    email   = db.Column(db.String(100), unique=True,nullable = False)
     password= db.Column(db.String(25), nullable= False)
     age     = db.Column(db.Integer, nullable = False)
     gender= db.Column(db.String(1), nullable = False)
     interested_in = db.Column(db.String(1), nullable = False)
     city    = db.Column(db.String(25), nullable = False)
     state =db.Column(db.String(25), nullable = False)
-    contact_no = db.Column(db.String(10), nullable = False)
+    contact_no = db.Column(db.String(10), unique=True,nullable = False)
     occupation = db.Column(db.String(25), nullable=False)
     yourself = db.Column(db.String(200), nullable=True)
+    profile_image_id = db.Column(db.Integer, nullable=True) # ,db.ForeignKey('images.image_id'))
+
 
     ######### Define Relationship ############
 
     hobbies = db.relationship('Hobbie', secondary="user_hobbies", backref="users")
 
+    images = db.relationship('Image')
+
+    profile = db.relationship('Image', foreign_keys=[profile_image_id], primaryjoin="User.profile_image_id==Image.image_id")
+
     # likes = db.relationship('Like', foreign_keys='likes_user_id')
     # likers = db.relationship('Like', foreign_keys='liked_user_id')    
     # dislikes = db.relationship('Dislike', foreign_keys='dislikes_user_id')
     # dislikers = db.relationship('Dislike', foreign_keys='disliked_user_id')
-
-    images = db.relationship('Image')
 
     def __repr__(self):
 
@@ -70,7 +74,6 @@ class Hobbie(db.Model):
 
         """ Provide helpful representation when printed """
         hb = f"""<Hobbie    hobbie_id ={self.hobbie_id}
-                    
                             hobbie_name={self.hobbie_name}>"""
                         #user_id ={self.user_id} 
         return hb
@@ -147,7 +150,7 @@ class Image(db.Model):
 
     image_id = db.Column(db.Integer, autoincrement = True, primary_key = True) 
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
-    url = db.Column(db.String(200), nullable=False)
+    filename = db.Column(db.String(200), nullable=False)
 
     #relationship
     user = db.relationship('User')
@@ -155,9 +158,9 @@ class Image(db.Model):
     def __repr__(self):
 
         """ Provide helpful representation when printed """
-        im = f"""<Image  image_id ={self.image_id}
+        im = f"""<Image image_id ={self.image_id}
                         user_id ={self.user_id} 
-                        url={self.url}>"""
+                        filename={self.filename}>"""
         return im
 
 ##############################################################################

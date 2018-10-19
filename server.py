@@ -9,7 +9,7 @@ from random import sample
 from werkzeug.utils import secure_filename
 from model import connect_to_db,db,User,Hobbie,User_Hobbies,Like,Dislike,Image
 
-UPLOAD_FOLDER = '/static/uploads'
+UPLOAD_FOLDER = 'static/uploads'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
 
@@ -75,7 +75,9 @@ def set_up():
         # query the database to get all hobbie objects from the Hobbie table
         return render_template("set_up.html",hobbies_info=hobbies_info)
         # pass that list of hobbie objects into render_template for the setup html page)
-
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @app.route('/add-user', methods=['POST'])#POST
 def add_user():
@@ -91,7 +93,8 @@ def add_user():
     hobbies = request.form.getlist("hobbie") 
         #getting list of hobbies from user 
     aboutme = request.form["aboutme"]
-    # upload = 
+    # uploading profile picture
+    file = request.files["file"]
 
     new_user = User(fname=session['fname'], lname = session["lname"],
                     email= session["email"],password =session["password"],
@@ -100,15 +103,35 @@ def add_user():
                     occupation=occupation,yourself=aboutme)
     
     db.session.add(new_user)
+    db.session.commit()
 
     for hobbie in hobbies:
         new_hobbie = User_Hobbies(hobbie_id=int(hobbie), user=new_user)
         db.session.add(new_hobbie)
         #adding every hobbie which user selected and adding to db
-    
+    db.session.commit()
+
+
+    if file.filename == " ":
+        flash('No selected file')
+        return redirect('/add-user')
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'],
+                                    str(new_user.user_id)+'_'+filename))
+
+    file.filename = str(new_user.user_id)+'_'+filename
+    # add image to database
+    add_profile_pic = Image(user=new_user, filename=file.filename)
+    db.session.add(add_profile_pic)
+    db.session.commit()
+    # Make this image the user's profile pic
+    new_user.profile = add_profile_pic
+
     db.session.commit()
 
     session["user_id"] = new_user.user_id
+
     flash("SingUp Successfully")
     return redirect(f"/homepage")
 
@@ -173,14 +196,15 @@ def profile(user_id):
     # checking user liked back
     liked_back = Like.query.filter_by(likes_user_id=user_id,liked_user_id=c_user_id).first()
 
-
+    # if current user liked this user
     if liked_in_like:
         status = 'liked'
     elif disliked_in_dislike:
         status = 'disliked'
     else:
         status = None
-
+   
+    # if that user liked back to the current user
     if liked_back and liked_in_like:
         matched = True
     else:

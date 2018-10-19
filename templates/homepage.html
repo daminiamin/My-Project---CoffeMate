@@ -17,16 +17,28 @@
     </a>
     
   <h1 class = "greet">
-    <span>Hi,{{user_info.fname}}
+    <span>Hi,{{user_info.fname}} {{user_info.lname}}
+
       <br>
-    Nice to meet you</span>
+    Nice to meet you !</span>
+
+        <p>Age:{{user_info.age}}</p>
+        <p>City:{{user_info.city}}</p>
+        <ul>Hobbies:
+        {% for hobbie in user_info.hobbies %}
+        <li>{{ hobbie.hobbie_name }}</li>
+        {% endfor %}
+        </ul>
+        <img src="/static/uploads/{{ user_info.profile.filename }}" class="p" alt="image">
+
+
   </h1>
   <form action="/profile">
    <div>
           <label id = "Suggestions">Suggestions
             {% for person in get_allobjects %}
-              <li><div style="width: 18rem;">
-                    <img src="/" class="p" alt="image">
+              <li><div style="width: 18em;">
+                    <img src="/static/uploads{{ person.profile.filename }}" class="p" alt="image">
                     <div class="card-body">
                       <h5 class="card-title">{{person.fname}}</h5>
                       <p class="card-text">{{person.lname}}

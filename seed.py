@@ -20,7 +20,7 @@ def load_users():
     Hobbie.query.delete()
 
 
-    deepika = User(fname="Deepika ",lname="Padukone",email="dp@gmail.com",
+    deepika = User(fname="Deepika",lname="Padukone",email="dp@gmail.com",
                 password="dp111",age=32, gender="F",interested_in ="M",
                 city="Mumbai",state="MH",contact_no="4084536679",
                 occupation="Actress")
@@ -104,12 +104,20 @@ def load_users():
     db.session.add_all([dlike1, dlike2, dlike3,dlike4,dlike5,dlike6])
     db.session.commit()
 
-    img1 = Image(user=akshay,url="http://www.gstatic.com/tv/thumb/persons/90028/90028_v9_ba.jpg")
-    img2 = Image(user=katrina,url="abc")
-    img3 = Image(user=diya,url="pqy")
-    img4 = Image(user=esha,url="vvv")
+    img1 = Image(user=akshay,filename="http://www.gstatic.com/tv/thumb/persons/90028/90028_v9_ba.jpg")
+    img2 = Image(user=katrina,filename="abc")
+    img3 = Image(user=diya,filename="pqy")
+    img4 = Image(user=esha,filename="vvv")
+    img5 = Image(user=esha,filename="vvv")
 
     db.session.add_all([img1, img2, img3,img4])
+    db.session.commit()
+
+    akshay.profile = img1
+    katrina.profile = img2
+    diya.profile = img3
+    esha.profile = img4
+
     db.session.commit()
 
 

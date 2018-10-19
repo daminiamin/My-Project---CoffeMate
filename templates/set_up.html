@@ -2,7 +2,7 @@
 {% block content %}
 
     <h1>SetUp Your Profile</h1>
-    <form action="/add-user" method="POST">
+    <form action="/add-user" method="POST" enctype=multipart/form-data>
 
         <div>
           <label>Age:
@@ -69,11 +69,10 @@
           </label>
         </div>
       <div class="upload_pic">
-        <label for="exampleFormControlFile1">Upload Your Photo</label>
-        <input type="file" name="upload" id="upload">
+        <label>Upload Your Photo</label>
+        <input type="file"name=file>
       </div>
       <br>
-
         <div>
           <input type="submit" value="SignUp">
         </div>

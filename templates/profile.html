@@ -18,6 +18,7 @@
 
 
 
+
     <div id="profile" style="width: 18rem;">
       <img class="card-img-top" src="{{user_info.image_id}}" alt="Card image cap">
       <div class="card-body">
@@ -48,82 +49,79 @@
     <!-- Show contact of user -->
     <p id="phone"> {{user_info.contact_no}}</p>
 
-
   <script>
 
-  
-  "use strict";
-  let phone = $('#phone');
+    
+    "use strict"; //
 
-  let hasMatched = {{ matched|tojson }};
+    let phone = $('#phone'); //id of p tage to show phone no.
+  //converts the given object into JSON, useful to generate JavaScript on the fly
+    let hasMatched = ({{ matched|tojson }}); //get data from flask to JS to see 
+                                            //user already liked this person back
 
-  if (hasMatched) { phone.show() };
 
+    if (hasMatched){    // 1.if ALREADY matched -show number
+      phone.show() 
+    }; 
 
-  let likeButton = $('#like');
-  let dislikeButton = $('#dislike');
-  
-  function likeResult(data) {
-    console.log(data);
-    likeButton.addClass("liked");
-    dislikeButton.removeClass("disliked");
+    let likeButton = $('#like');
+    let dislikeButton = $('#dislike');
 
-    // if liked_back is true, phone.html( PHONE NUMBER HERE ) and phone.show();
-    if (data.liked_back == true){
+    function likeResult(data) {
+      console.log(data);
+      likeButton.addClass("liked");
+      dislikeButton.removeClass("disliked");
 
-      // phone.html()
-      phone.show();
+      // if liked_back is true, phone.show();
+      if (data.liked_back == true){
+        // phone.html()
+        phone.show(); //2. if user LIKED BACK ,show phone number
+      }
+        
     }
-      
-  }
-  
-  function unlikeResult(data) {
-    likeButton.removeClass('liked');
-    console.log(data)
-    phone.hide();
-  }
-
-  // TODO:
-  // check data for status if status is ok update the classes
-  // check data for liked back and if it's true then get phoneno and display it
-
-  function processLikedclick() {
-    if (likeButton.hasClass('liked')) {
-      // unlike
-      $.post('/unlike', likeButton.data(), unlikeResult); // data looks like this... {likedUserId: 9}
-    } else {
-      // like
-      $.post('/like', likeButton.data(), likeResult);
-           // route, data from button(id), callback()
-    }
-  }
-
-  likeButton.on('click', processLikedclick);
-
-
-  function processDislikedclick() { // data looks like this... {dislikedUserId: 9}
-    if (dislikeButton.hasClass('disliked')){
-
-      // undislike
-      dislikeButton.removeClass('disliked');
-
-      // ajax post request to server including id of user profile
-      $.post('/undislike',dislikeButton.data(), function(data) { console.log(data); });
-
-    } else{
-      // dislike
-      dislikeButton.addClass('disliked');
-      $.post('/dislike',dislikeButton.data(), unlikeResult);
-            // route, data from button(id), callback()
-
-      likeButton.removeClass("liked");
+    
+    function unlikeResult(data) {
+      likeButton.removeClass('liked');
+      console.log(data)
       phone.hide();
     }
 
-  }
+    function processLikedclick() {
+      if (likeButton.hasClass('liked')) {
+        // unlike
+        $.post('/unlike', likeButton.data(), unlikeResult); // data looks like this... {likedUserId: 9}
+      } else {
+        // like
+        $.post('/like', likeButton.data(), likeResult);
+             // route, data from button(id), callback()
+      }
+    }
 
-  dislikeButton.on('click', processDislikedclick);
+    likeButton.on('click', processLikedclick);
 
+
+    function processDislikedclick() { // data looks like this... {dislikedUserId: 9}
+      if (dislikeButton.hasClass('disliked')){
+
+        // undislike
+        dislikeButton.removeClass('disliked');
+
+        // ajax post request to server including id of user profile
+        $.post('/undislike',dislikeButton.data(), function(data) { console.log(data); });
+
+      } else{
+        // dislike
+        dislikeButton.addClass('disliked');
+        $.post('/dislike',dislikeButton.data(), unlikeResult);
+              // route, data from button(id), callback()
+
+        likeButton.removeClass("liked");
+        phone.hide();
+      }
+
+    }
+
+    dislikeButton.on('click', processDislikedclick);
 
   </script>
 
