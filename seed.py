@@ -104,19 +104,21 @@ def load_users():
     db.session.add_all([dlike1, dlike2, dlike3,dlike4,dlike5,dlike6])
     db.session.commit()
 
-    img1 = Image(user=akshay,filename="http://www.gstatic.com/tv/thumb/persons/90028/90028_v9_ba.jpg")
-    img2 = Image(user=katrina,filename="abc")
+    img1 = Image(user=akshay,filename="3_ak.png")
+    img2 = Image(user=deepika,filename="1_dp.png")
     img3 = Image(user=diya,filename="pqy")
-    img4 = Image(user=esha,filename="vvv")
+    img4 = Image(user=ranvir,filename="5_rv.png")
     img5 = Image(user=esha,filename="vvv")
 
-    db.session.add_all([img1, img2, img3,img4])
+    db.session.add_all([img1, img2, img3,img4,img5])
     db.session.commit()
-
+    #making profile pic saparate 
     akshay.profile = img1
-    katrina.profile = img2
+    deepika.profile = img2
     diya.profile = img3
-    esha.profile = img4
+    ranvir.profile = img4
+    esha.profile = img5
+
 
     db.session.commit()
 

@@ -19,12 +19,12 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.secret_key = 'DK'
 
 
-@app.route('/', methods=['GET']) #GET
+@app.route('/', methods=['GET'])
 def landing_page():
     """Show landing page."""
     return render_template('landing_page.html')
 
-@app.route('/login', methods=['POST']) #POST
+@app.route('/login', methods=['POST']) 
 def login():
     """ User Login Page """
 
@@ -42,12 +42,11 @@ def login():
             flash("Incorrect password")
     else:
         flash("No such user")
-    #if user selected log in and user exists return render_template('homepage.html')
 
     return redirect("/")
 
 
-@app.route('/set-up', methods=['POST'])#POST
+@app.route('/set-up', methods=['POST'])
 def set_up():
     """Show set up page"""
 
@@ -71,17 +70,20 @@ def set_up():
 
         flash("SignUp ")
 
-        hobbies_info = Hobbie.query.all()
         # query the database to get all hobbie objects from the Hobbie table
-        return render_template("set_up.html",hobbies_info=hobbies_info)
+        hobbies_info = Hobbie.query.all()
+
         # pass that list of hobbie objects into render_template for the setup html page)
+        return render_template("set_up.html",hobbies_info=hobbies_info)
+
+# upload file function
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-@app.route('/add-user', methods=['POST'])#POST
+@app.route('/add-user', methods=['POST']) #POST from setup page
 def add_user():
-    # Get user from db based on session user id
+    """ add new user's information """
 
     age = request.form["age"]
     gender = request.form["gender"]
@@ -90,12 +92,13 @@ def add_user():
     state = request.form["state"]
     contact = request.form["contact"]
     occupation = request.form["occupation"]
+            #getting list of hobbies from user 
     hobbies = request.form.getlist("hobbie") 
-        #getting list of hobbies from user 
     aboutme = request.form["aboutme"]
-    # uploading profile picture
+    # upload profile picture
     file = request.files["file"]
 
+                    # Get user info from session 
     new_user = User(fname=session['fname'], lname = session["lname"],
                     email= session["email"],password =session["password"],
                     age=int(age),gender=gender,interested_in=interested_in,
@@ -106,17 +109,17 @@ def add_user():
     db.session.commit()
 
     for hobbie in hobbies:
+        #adding every hobbie which user selected and adding to user_hobbies table
         new_hobbie = User_Hobbies(hobbie_id=int(hobbie), user=new_user)
         db.session.add(new_hobbie)
-        #adding every hobbie which user selected and adding to db
     db.session.commit()
-
 
     if file.filename == " ":
         flash('No selected file')
         return redirect('/add-user')
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
+                    # saving image with unique name in static\uploads folder
         file.save(os.path.join(app.config['UPLOAD_FOLDER'],
                                     str(new_user.user_id)+'_'+filename))
 
@@ -125,8 +128,9 @@ def add_user():
     add_profile_pic = Image(user=new_user, filename=file.filename)
     db.session.add(add_profile_pic)
     db.session.commit()
+
     # Make this image the user's profile pic
-    new_user.profile = add_profile_pic
+    new_user.profile = add_profile_pic                  #????????????????
 
     db.session.commit()
 
@@ -138,7 +142,7 @@ def add_user():
 
 @app.route('/homepage')
 def homepage():
-    """Show  homepage page"""
+    """Show  user's homepage page"""
 
     user_id = session["user_id"]
     user_info = User.query.get(user_id) #current user info
@@ -167,22 +171,16 @@ def homepage():
 
 
     if len(all_interest_users) > 3:
+        #get3 users who has same hobbie
 
         all_interest_users = sample(all_interest_users, 3)
-        #get3 users who has same hobbie
 
     return render_template("homepage.html", user_info=user_info,
                                             get_allobjects=all_interest_users)
 
-                                                                                # like/unlike         dislike/undislike
-
-                                                                                # if user liked already
-                                                                                # if user disliked already
-                                                                                # if user unlike already
-                                                                                # if User disunliked already
 @app.route('/profile/<int:user_id>')
 def profile(user_id):
-    """Show the user profile for that user."""
+    """Show another user's profile page"""
 
     c_user_id = session["user_id"] #current user info
 
@@ -226,7 +224,7 @@ def logout():
 ############## LIKE ############################
 @app.route('/like', methods=['POST'])
 def like():
-    """ liking user by saving into database """
+    """ liking user and saving into database """
 
     user_id = session["user_id"]#current user id
 
@@ -266,7 +264,7 @@ def like():
 ############## UNLIKE ############################
 @app.route('/unlike', methods=['POST'])
 def unlike():
-    """ unliking user by saving into database """
+    """ unliking user and saving into database """
 
     user_id = session["user_id"]#current user id
 
@@ -288,7 +286,7 @@ def unlike():
 
 @app.route('/dislike', methods=["POST"])
 def dislike():
-    """ disliking user by saving into database """
+    """ disliking user and saving into database """
 
     user_id = session["user_id"]#current user id
 
@@ -317,7 +315,7 @@ def dislike():
 ############## UNDISLIKE ############################
 @app.route('/undislike', methods=['POST'])
 def undislike():
-    """ undisliking user by saving into database """
+    """ undisliking user and saving into database """
 
     user_id = session["user_id"]#current user id
 
@@ -332,6 +330,23 @@ def undislike():
 
     db.session.commit()
     return "OK"
+
+@app.route('/connections',methods=['GET'])
+def connections():
+    """ Show connections of user"""
+    c_user_id = session["user_id"]
+
+    c_user_info = User.query.get(c_user_id) #current user info
+
+
+    get_likes = c_user_info.likes #list of all users liked by current user.
+    # for loop to get only ids from objects
+    liked_ids = set([like.liked_user_id for like in get_likes])
+
+    liked_back = db.session.query(Like.likes_user_id).filter_by(likes_user_id.in_(liked_ids),liked_user_id=c_user_id).all()
+
+    return render_template("connections.html",liked_back)
+
 
 ##########Test Route##################
 

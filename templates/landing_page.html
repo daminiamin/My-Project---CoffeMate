@@ -7,55 +7,53 @@
     <h1>Coffe Mate</h1>
 
     <h2>Connect with people</h2>
-    <h4> Login</h4>
-    <form action="/login" method="POST">
+      <div class="container">
 
-        <div>
-          <label>Email:
-            <input type="email" name="email" required>
-          </label>
-        </div>
-        <br>
-        <div>
-          <label>Password:
-            <input type="password" name="password" required>
-          </label>
-        </div>
-        <br>
-        <div>
-          <input type="submit" value="Log In">
-        </div>
-    </form>
-    <h4> SignUp</h4>
-    <form action="/set-up" method="POST">
+          <div class="row">
+            <div class="col-6 col-md-3 order-md-2">
+              <h4>Login</h4>
+              <form action="/login" method="POST">
+                <label>Email:
+                  <input type="email" name="email" required>
+                </label>
+                <br>
+                <label>Password:
+                  <input type="password" name="password" required>
+                </label>
+                  <br>
+                  <input type="submit" value="Log In">
+              </form>
+            </div>
+          </div>
 
-        <div>
-          <label>First Name:
-            <input type="text" name="fname" required>
-          </label>
+      <div class="row">
+        <div class="col-6 col-md-9 order-md-1">
+          <h4> SignUp</h4>
+          <form action="/set-up" method="POST">
+            <label>First Name:
+              <input type="text" name="fname" required>
+            </label>        
+            <br>
+            <label>Last Name:
+              <input type="text" name="lname" required>
+            </label>
+            <br>
+            <label>Email:
+              <input type="email" name="email" required>
+            </label>
+            <br>
+            <label>Password:
+              <input type="password" name="password" required>
+            </label>           
+            <br>             
+              <input type="submit" value="Create">
+          </form>            
         </div>
-        <br>
-        <div>
-          <label>Last Name:
-            <input type="text" name="lname" required>
-          </label>
-        </div>
-        <br>
-        <div>
-          <label>Email:
-            <input type="email" name="email" required>
-          </label>
-        </div>
-        <br>
-        <div>
-          <label>Password:
-            <input type="password" name="password" required>
-          </label>
-        </div>
-        <br>
-        <div>
-          <input type="submit" value="SignUp">
-        </div>
-    </form>
+      </div>
+
+
+
+
+
 </body>
 {% endblock %}

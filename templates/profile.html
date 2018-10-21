@@ -3,32 +3,23 @@
  
     <a href="/homepage">
       <button type="button" class="btn btn-outline-primary">Home</button>
-    </a>
-    <!-- TODO: make account route -->
-    <a href="/account"> 
-      <button type="button" class="btn btn-outline-info">Account</button>
-    </a>
-    <!-- TODO: make info route -->
-    <a href="/info">
-      <button type="button" class="btn btn-outline-secondary">Info</button>
-    </a>
-    <a href="/logout">
-      <button type="button" class="btn btn-outline-info">Logout</button>
-    </a>
-
-
-
+    </a>   
 
     <div id="profile" style="width: 18rem;">
-      <img class="card-img-top" src="{{user_info.image_id}}" alt="Card image cap">
-      <div class="card-body">
-        <h4 class="user-name">{{user_info.fname}}</h4>
-        <p>{{user_info.lname}}</p>
-        <p>{{user_info.age}}</p>
-        <p>{{user_info.city}}</p>
-        <p>{{user_info.hobbie}}</p>
+    <p> <img src="/static/uploads/{{ user_info.profile.filename }}" class="profile_pic" alt="image">
 
-        <p>{{user_info.yourself}}</p>
+
+
+      <div class="card-body">
+        <h4 class="user-name">{{user_info.fname}}{{user_info.lname}}</h4>
+        <p>Age:{{user_info.age}}</p>
+        <p>City:{{user_info.city}}</p>
+        <p>Hobbies:
+       {% for hobbie in user_info.hobbies %}
+        <li>{{hobbie.hobbie_name}}</li>
+        {% endfor %}
+
+        <p>About me: {{user_info.yourself}}</p>
         
         <p class="card-text">Search People, Connect, Talk and Meet at Caffe</p>
       </div>
@@ -59,7 +50,6 @@
     let hasMatched = ({{ matched|tojson }}); //get data from flask to JS to see 
                                             //user already liked this person back
 
-
     if (hasMatched){    // 1.if ALREADY matched -show number
       phone.show() 
     }; 
@@ -69,8 +59,8 @@
 
     function likeResult(data) {
       console.log(data);
-      likeButton.addClass("liked");
-      dislikeButton.removeClass("disliked");
+      likeButton.addClass('liked');
+      dislikeButton.removeClass('disliked');
 
       // if liked_back is true, phone.show();
       if (data.liked_back == true){
@@ -79,12 +69,13 @@
       }
         
     }
-    
+
     function unlikeResult(data) {
       likeButton.removeClass('liked');
       console.log(data)
-      phone.hide();
+      phone.hide();         //hide phone when user unlikes
     }
+//#########################################################################
 
     function processLikedclick() {
       if (likeButton.hasClass('liked')) {
@@ -92,36 +83,28 @@
         $.post('/unlike', likeButton.data(), unlikeResult); // data looks like this... {likedUserId: 9}
       } else {
         // like
-        $.post('/like', likeButton.data(), likeResult);
+        $.post('/like', likeButton.data(), likeResult());
              // route, data from button(id), callback()
       }
     }
-
     likeButton.on('click', processLikedclick);
 
-
-    function processDislikedclick() { // data looks like this... {dislikedUserId: 9}
+//#########################################################################
+    function processDislikedclick(){ 
       if (dislikeButton.hasClass('disliked')){
-
         // undislike
         dislikeButton.removeClass('disliked');
-
-        // ajax post request to server including id of user profile
-        $.post('/undislike',dislikeButton.data(), function(data) { console.log(data); });
-
+                              //  data looks like this... {dislikedUserId: 9}
+        $.post('/undislike',dislikeButton.data(), function(data) {console.log(data); });
       } else{
         // dislike
         dislikeButton.addClass('disliked');
-        $.post('/dislike',dislikeButton.data(), unlikeResult);
+        $.post('/dislike',dislikeButton.data(), unlikeResult());
               // route, data from button(id), callback()
-
-        likeButton.removeClass("liked");
-        phone.hide();
-      }
-
+       }
     }
-
     dislikeButton.on('click', processDislikedclick);
+//#########################################################################
 
   </script>
 
