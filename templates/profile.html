@@ -3,23 +3,57 @@
  
     <a href="/homepage">
       <button type="button" class="btn btn-outline-primary">Home</button>
-    </a>   
+    </a>
+    <!-- TODO: make account route -->
+    <a href="/account"> 
+      <button type="button" class="btn btn-outline-info">Account</button>
+    </a>
+    <!-- TODO: make info route -->
+    <a href="/info">
+      <button type="button" class="btn btn-outline-secondary">Info</button>
+    </a>
+    <a href="/logout">
+      <button type="button" class="btn btn-outline-info">Logout</button>
+    </a>
+
+
+
+
+
+
+
+      <p> <img src="/static/uploads/{{ user_info.profile.filename }}" class="profile_pic" alt="image">
+       <div id="profile" style="width: 18rem;">
+
+
+
+
+
+
+
+              <h4 class="user-name">{{user_info.fname}}{{user_info.lname}}</h4>
+      <p>Age:{{user_info.age}}</p>
+      <p>City:{{user_info.city}}</p>
+      <p>Hobbies:
+      {% for hobbie in user_info.hobbies %}
+      <li>{{hobbie.hobbie_name}}</li>
+      {% endfor %}
+      <p>About me: {{user_info.yourself}}</p>
+
+
+
+
 
     <div id="profile" style="width: 18rem;">
-    <p> <img src="/static/uploads/{{ user_info.profile.filename }}" class="profile_pic" alt="image">
-
-
-
+      <img class="card-img-top" src="{{user_info.image_id}}" alt="Card image cap">
       <div class="card-body">
-        <h4 class="user-name">{{user_info.fname}}{{user_info.lname}}</h4>
-        <p>Age:{{user_info.age}}</p>
-        <p>City:{{user_info.city}}</p>
-        <p>Hobbies:
-       {% for hobbie in user_info.hobbies %}
-        <li>{{hobbie.hobbie_name}}</li>
-        {% endfor %}
+        <h4 class="user-name">{{user_info.fname}}</h4>
+        <p>{{user_info.lname}}</p>
+        <p>{{user_info.age}}</p>
+        <p>{{user_info.city}}</p>
+        <p>{{user_info.hobbie}}</p>
 
-        <p>About me: {{user_info.yourself}}</p>
+        <p>{{user_info.yourself}}</p>
         
         <p class="card-text">Search People, Connect, Talk and Meet at Caffe</p>
       </div>
@@ -40,71 +74,82 @@
     <!-- Show contact of user -->
     <p id="phone"> {{user_info.contact_no}}</p>
 
+
   <script>
 
-    
-    "use strict"; //
+  
+  "use strict";
+  let phone = $('#phone');
 
-    let phone = $('#phone'); //id of p tage to show phone no.
-  //converts the given object into JSON, useful to generate JavaScript on the fly
-    let hasMatched = ({{ matched|tojson }}); //get data from flask to JS to see 
-                                            //user already liked this person back
+  let hasMatched = {{ matched|tojson }};
 
-    if (hasMatched){    // 1.if ALREADY matched -show number
-      phone.show() 
-    }; 
+  if (hasMatched) { phone.show() };
 
-    let likeButton = $('#like');
-    let dislikeButton = $('#dislike');
 
-    function likeResult(data) {
-      console.log(data);
-      likeButton.addClass('liked');
+  let likeButton = $('#like');
+  let dislikeButton = $('#dislike');
+  
+  function likeResult(data) {
+    console.log(data);
+    likeButton.addClass("liked");
+    dislikeButton.removeClass("disliked");
+
+    // if liked_back is true, phone.html( PHONE NUMBER HERE ) and phone.show();
+    if (data.liked_back == true){
+
+      // phone.html()
+      phone.show();
+    }
+      
+  }
+  
+  function unlikeResult(data) {
+    likeButton.removeClass('liked');
+    console.log(data)
+    phone.hide();
+  }
+
+  // TODO:
+  // check data for status if status is ok update the classes
+  // check data for liked back and if it's true then get phoneno and display it
+
+  function processLikedclick() {
+    if (likeButton.hasClass('liked')) {
+      // unlike
+      $.post('/unlike', likeButton.data(), unlikeResult); // data looks like this... {likedUserId: 9}
+    } else {
+      // like
+      $.post('/like', likeButton.data(), likeResult);
+           // route, data from button(id), callback()
+    }
+  }
+
+  likeButton.on('click', processLikedclick);
+
+
+  function processDislikedclick() { // data looks like this... {dislikedUserId: 9}
+    if (dislikeButton.hasClass('disliked')){
+
+      // undislike
       dislikeButton.removeClass('disliked');
 
-      // if liked_back is true, phone.show();
-      if (data.liked_back == true){
-        // phone.html()
-        phone.show(); //2. if user LIKED BACK ,show phone number
-      }
-        
+      // ajax post request to server including id of user profile
+      $.post('/undislike',dislikeButton.data(), function(data) { console.log(data); });
+
+    } else{
+      // dislike
+      dislikeButton.addClass('disliked');
+      $.post('/dislike',dislikeButton.data(), unlikeResult);
+            // route, data from button(id), callback()
+
+      likeButton.removeClass("liked");
+      phone.hide();
     }
 
-    function unlikeResult(data) {
-      likeButton.removeClass('liked');
-      console.log(data)
-      phone.hide();         //hide phone when user unlikes
-    }
-//#########################################################################
+  }
 
-    function processLikedclick() {
-      if (likeButton.hasClass('liked')) {
-        // unlike
-        $.post('/unlike', likeButton.data(), unlikeResult); // data looks like this... {likedUserId: 9}
-      } else {
-        // like
-        $.post('/like', likeButton.data(), likeResult());
-             // route, data from button(id), callback()
-      }
-    }
-    likeButton.on('click', processLikedclick);
+  dislikeButton.on('click', processDislikedclick);
 
-//#########################################################################
-    function processDislikedclick(){ 
-      if (dislikeButton.hasClass('disliked')){
-        // undislike
-        dislikeButton.removeClass('disliked');
-                              //  data looks like this... {dislikedUserId: 9}
-        $.post('/undislike',dislikeButton.data(), function(data) {console.log(data); });
-      } else{
-        // dislike
-        dislikeButton.addClass('disliked');
-        $.post('/dislike',dislikeButton.data(), unlikeResult());
-              // route, data from button(id), callback()
-       }
-    }
-    dislikeButton.on('click', processDislikedclick);
-//#########################################################################
 
   </script>
 
