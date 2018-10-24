@@ -18,14 +18,17 @@
     </div>
   </div>
   
-  <div>
+  <div class="container">
     <a href="/logout">
       <button type="button" class="btn btn-outline-info">Logout</button>
     </a>
     <a href="/connections">
-    <button type="button" class="btn btn-outline-primary">Connections</button>
+      <i size: 7x; class="fas fa-link fa-3x"></i>
     </a>
-    <button type="button" class="btn btn-outline-secondary">Messages</button>
+    <a href="/messages">
+      <span class="fa-layers fa-fw fa-3x" style="background:MistyRose">
+      <i class="fas fa-envelope"></i>
+      <span class="fa-layers-counter" style="background:Tomato"></span></a>
   </div> 
     
     <br>
@@ -33,7 +36,8 @@
   <h4 class = "greet">
     <p> <img src="/static/uploads/{{ user_info.profile.filename }}" class="profile_pic" alt="image">
     Hi,{{user_info.fname}} {{user_info.lname}}</p>
-    
+    <i class="fas fa-cog fa-spin"></i>
+
    <p> Nice to meet you !</p>
   </h4>
 

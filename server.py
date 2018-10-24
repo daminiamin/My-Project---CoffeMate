@@ -17,6 +17,8 @@ ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.secret_key = 'DK'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
 
 
 @app.route('/', methods=['GET'])
@@ -50,7 +52,7 @@ def login():
 def set_up():
     """Show set up page"""
 
-    # getting info of new user from singup form
+    # getting info of new user from signup form
     fname = request.form["fname"]
     lname = request.form["lname"]
     email = request.form["email"]
@@ -68,7 +70,7 @@ def set_up():
         session["email"]=email
         session["password"]=password
 
-        flash("SignUp ")
+        flash("create you profile ")
 
         # query the database to get all hobbie objects from the Hobbie table
         hobbies_info = Hobbie.query.all()
@@ -114,7 +116,7 @@ def add_user():
         db.session.add(new_hobbie)
     db.session.commit()
 
-    if file.filename == " ":
+    if file.filename == "":
         flash('No selected file')
         return redirect('/add-user')
     if file and allowed_file(file.filename):
@@ -136,7 +138,7 @@ def add_user():
 
     session["user_id"] = new_user.user_id
 
-    flash("SingUp Successfully")
+    flash("SignUp Successfully")
     return redirect(f"/homepage")
 
 
@@ -343,9 +345,26 @@ def connections():
     # for loop to get only ids from objects
     liked_ids = set([like.liked_user_id for like in get_likes])
 
-    liked_back = db.session.query(Like.likes_user_id).filter_by(likes_user_id.in_(liked_ids),liked_user_id=c_user_id).all()
+    liked_back = db.session.query(User).join(Like).filter_by(likes_user_id.in_(liked_ids),liked_user_id=c_user_id).all()
 
     return render_template("connections.html",liked_back)
+
+
+@app.route('/change-info',methods=['GET'])
+def change_info():
+    """ allow user to change info of a user """
+
+
+@app.route('/change-profile',methods=['GET'])
+def change_profile():
+    """ allow user to change profile image """
+
+
+@app.route('/delete-account',methods=['GET'])
+def delete_account():
+    """ delete account"""
+
+
 
 
 ##########Test Route##################
@@ -357,6 +376,7 @@ def connections():
 ##########################
 
 if __name__ == "__main__":
+    # app.debug = False
     app.debug = True
 
     connect_to_db(app)

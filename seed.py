@@ -70,7 +70,7 @@ def load_users():
     db.session.commit()
     
 
-    deepika.hobbies.extend([hobbie4])
+    deepika.hobbies.extend([hobbie4]) #extends stores
     ranvir.hobbies.append(hobbie4)
     akshay.hobbies.append(hobbie4)
     esha.hobbies.append(hobbie3)
@@ -85,8 +85,8 @@ def load_users():
     like1 = Like(likes_user = deepika,liked_user=hrithik)
     like2 = Like(likes_user = ranvir,liked_user= hrithik)
     like3 = Like(likes_user = akshay,liked_user= katrina)
-    like4 = Like(likes_user = katrina,liked_user= ranvir)
-    like5 = Like(likes_user = esha,liked_user= katrina)
+    like4 = Like(likes_user = ranvir,liked_user= deepika)
+    like5 = Like(likes_user = deepika,liked_user= ranvir)
     like6 = Like(likes_user = esha,liked_user= hrithik)
 
 

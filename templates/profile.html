@@ -4,61 +4,25 @@
     <a href="/homepage">
       <button type="button" class="btn btn-outline-primary">Home</button>
     </a>
-    <!-- TODO: make account route -->
-    <a href="/account"> 
-      <button type="button" class="btn btn-outline-info">Account</button>
-    </a>
-    <!-- TODO: make info route -->
-    <a href="/info">
-      <button type="button" class="btn btn-outline-secondary">Info</button>
-    </a>
+ 
     <a href="/logout">
       <button type="button" class="btn btn-outline-info">Logout</button>
     </a>
 
-
-
-
-
-
-
-      <p> <img src="/static/uploads/{{ user_info.profile.filename }}" class="profile_pic" alt="image">
-       <div id="profile" style="width: 18rem;">
-
-
-
-
-
-
-
-              <h4 class="user-name">{{user_info.fname}}{{user_info.lname}}</h4>
-      <p>Age:{{user_info.age}}</p>
-      <p>City:{{user_info.city}}</p>
-      <p>Hobbies:
-      {% for hobbie in user_info.hobbies %}
-      <li>{{hobbie.hobbie_name}}</li>
-      {% endfor %}
-      <p>About me: {{user_info.yourself}}</p>
-
-
-
-
-
-    <div id="profile" style="width: 18rem;">
-      <img class="card-img-top" src="{{user_info.image_id}}" alt="Card image cap">
-      <div class="card-body">
-        <h4 class="user-name">{{user_info.fname}}</h4>
-        <p>{{user_info.lname}}</p>
-        <p>{{user_info.age}}</p>
-        <p>{{user_info.city}}</p>
-        <p>{{user_info.hobbie}}</p>
-
-        <p>{{user_info.yourself}}</p>
-        
-        <p class="card-text">Search People, Connect, Talk and Meet at Caffe</p>
-      </div>
+    <div id="profile">
+      <img src="/static/uploads/{{ user_info.profile.filename }}" class="profile_pic" alt="image">
+      <h4 class="user-name">{{user_info.fname}} {{user_info.lname}}</h4>
     </div>
-    
+      <div>
+        <p>Age:{{user_info.age}}</p>
+        <p>City:{{user_info.city}}</p>
+        <p>Hobbies:
+        {% for hobbie in user_info.hobbies %}
+        <li>{{hobbie.hobbie_name}}</li>
+        {% endfor %}</p>
+        <p>About me: {{user_info.yourself}}</p>
+      </div>
+    <i class="fas fa-heart fa-3x"></i>
     <button
       id="like"
       data-liked-user-id='{{ user_info.user_id }}'
