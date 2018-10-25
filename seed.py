@@ -22,36 +22,36 @@ def load_users():
 
     deepika = User(fname="Deepika",lname="Padukone",email="dp@gmail.com",
                 password="dp111",age=32, gender="F",interested_in ="M",
-                city="Mumbai",state="MH",contact_no="4084536679",
+                city="Santa Clara",state="CA",contact_no="4084536679",
                 occupation="Actress")
 
     diya = User(fname="Diya ",lname="Mirza",email="dm@hotmail.com",
                 password="dm444",age=38, gender="F",interested_in ="M",
-                city="Delhi",state="DL",contact_no="4084544445",
+                city="Portland",state="OR",contact_no="4084544445",
                 occupation="Fashion Designer")
 
     akshay = User(fname="Akshay ",lname="Kumar",email="ak@gmail.com",
                 password="ak47",age=42, gender="M",interested_in ="F",
-                city="Rajesthan",state="RJ",contact_no="9997188913",
+                city="Los Angeles",state="CA",contact_no="9997188913",
                 occupation="Actor")
 
     katrina = User(fname="Katrina ",lname="Kaif",email="kf@yahoo.com",
                 password="kf000",age=30, gender="F",interested_in ="M",
-                city="Chandigarh",state="CH",contact_no="9421366790",
+                city="Destin",state="FL",contact_no="9421366790",
                 occupation="Actress")
 
     ranvir = User(fname="Ranvir ",lname="Singh",email="rv@gmail.com",
                 password="rv222",age=30, gender="M",interested_in ="F",
-                city="Mumbai",state="MH",contact_no="4082222679",
+                city="San Francisco",state="CA",contact_no="4082222679",
                 occupation="Actor")
 
     esha = User(fname="Esha ",lname="Gupta",email="eg@gmail.com",
-                password="eg999",age=35, gender="F",interested_in ="M",city="Goa"
+                password="eg999",age=35, gender="F",interested_in ="M",city="Atlanta"
                 ,state="GA",contact_no="9427158913",occupation="Engineer")
 
     hrithik = User(fname="Hrithik ",lname="Roshan",email="hr@outlook.com",
                 password="hr123",age=40, gender="M",interested_in ="F",
-                city="Gujarat",state="GJ",contact_no="9227155913",
+                city="Palo Alto",state="CA",contact_no="9227155913",
                 occupation="Actor")
 
    

@@ -117,4 +117,20 @@
 
   </script>
 
+<!-- jinja if statement if suggestions is not an empty list -->
+  <!-- {% if yelp_suggestion != [] %} -->
+    <div>
+          <!-- print Yelp API coffee Shops suggestions -->
+
+      <h1>Coffee Shops,You can visit </h1>
+      {% for business in yelp_suggestions['businesses'] %}
+          <ul> <a href={{business['url']}}>{{ business['name'] }}</a>
+              <img class="yelp-image" src="{{business['image_url']}}" height="200" width="200">
+              <li>Location: {{business["location"]["address1"]}}, {{business["location"]["city"]}}</li>
+              <!-- <li>{{ business.keys() }}</li> -->
+          </ul>
+      {% endfor %}
+    </div>
+  <!-- {% endif %} -->
+
 {% endblock %}

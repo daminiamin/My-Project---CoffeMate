@@ -1,7 +1,9 @@
 """Sample Flask app for SQLAlchemy homework."""
-
-from jinja2 import StrictUndefined
+from geopy.geocoders import Nominatim #for long-lat
+import requests #for api req
+from pprint import pprint
 import os
+from jinja2 import StrictUndefined
 import json
 from flask import Flask, render_template,jsonify,request,flash,redirect,session
 from flask_debugtoolbar import DebugToolbarExtension
@@ -16,9 +18,10 @@ ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.secret_key = 'DK'
+app.secret_key = 'DKAMIN'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
+yelp_api_key = os.environ['YELP_KEY']   #Yelp key 
+yelp_url = "https://api.yelp.com/v3/businesses" #yelp url
 
 
 @app.route('/', methods=['GET'])
@@ -180,12 +183,33 @@ def homepage():
     return render_template("homepage.html", user_info=user_info,
                                             get_allobjects=all_interest_users)
 
+
+#defining function for API call
+#helper function
+
+def yelp_api(coordinates):
+
+    headers = {'Authorization': 'Bearer '+ yelp_api_key}
+    payload = {'latitude': coordinates[0],
+               'longitude': coordinates[1],
+               'term': 'Coffee Shop', 
+               'limit': 5}
+    response = requests.get(yelp_url+"/search",
+                                    params=payload,
+                                    headers=headers)
+    
+    data = response.json()
+    print(data)
+
+    return data
+
 @app.route('/profile/<int:user_id>')
 def profile(user_id):
     """Show another user's profile page"""
 
     c_user_id = session["user_id"] #current user info
 
+    c_user_info = User.query.get(c_user_id)
     another_user_info = User.query.get(user_id)
     # checking user in like
     liked_in_like = Like.query.filter_by(likes_user_id=c_user_id , liked_user_id=user_id).first()
@@ -211,8 +235,33 @@ def profile(user_id):
         matched = False
 
 
+    # If the two users are a match, then...
+    if matched == True:
+    # Make a request to the Yelp API here to get suggested date locations 
+    # based on the two users' interests
+
+    # Step 1) Get (lat, lng) coordinates for each user's city
+        c_user_city = c_user_info.city
+        another_user_city = another_user_info.city
+        
+        geolocator = Nominatim(user_agent="")
+        c_location = geolocator.geocode(c_user_city)
+        another_location = geolocator.geocode(another_user_city)
+        print((c_location.latitude, c_location.longitude))
+        print((another_location.latitude, another_location.longitude))
+
+        # Calculate the midpoint
+        mid_lat = (c_location.latitude + another_location.latitude) / 2
+        mid_lng = (c_location.longitude + another_location.longitude) / 2
+        midpoint = (mid_lat, mid_lng)
+        # Step 3) Make a request to Yelp API with the midpoint coordinates
+        yelp_suggestions = yelp_api(midpoint)
+
+    yelp_suggestions = []
+
     return render_template("profile.html", user_info=another_user_info, 
-                                        status = status ,matched = matched)
+                                        status = status ,matched = matched,
+                                            yelp_suggestions=yelp_suggestions)
 
 
 @app.route('/logout')
@@ -344,16 +393,19 @@ def connections():
     get_likes = c_user_info.likes #list of all users liked by current user.
     # for loop to get only ids from objects
     liked_ids = set([like.liked_user_id for like in get_likes])
+    
+    liked_back = db.session.query(User).join(Like.likes_user).filter(Like.likes_user_id.in_(liked_ids),Like.liked_user_id==c_user_id).all()
 
-    liked_back = db.session.query(User).join(Like).filter_by(likes_user_id.in_(liked_ids),liked_user_id=c_user_id).all()
+    
 
-    return render_template("connections.html",liked_back)
+
+    return render_template("connections.html",liked_back=liked_back)
 
 
 @app.route('/change-info',methods=['GET'])
 def change_info():
     """ allow user to change info of a user """
-
+     
 
 @app.route('/change-profile',methods=['GET'])
 def change_profile():
@@ -364,15 +416,25 @@ def change_profile():
 def delete_account():
     """ delete account"""
 
-
-
-
 ##########Test Route##################
 
-# @app.route('/test')
-# def test():
 
-#     return render_template("test.html")
+
+# @app.route('/test', methods=["GET"])
+# def yelp_api():
+
+
+    # headers = {'Authorization': 'Bearer ' + yelp_api_key}
+
+    # payload = {'location': 'santa clara','term': 'Coffee Shop', 'limit': 5}
+
+    # response = requests.get(yelp_url+"/search",
+    #                         params=payload,
+    #                         headers=headers)
+    # data = response.json()
+
+    # return render_template("test.html",data=data)
+
 ##########################
 
 if __name__ == "__main__":

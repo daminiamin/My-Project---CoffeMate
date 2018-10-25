@@ -58,7 +58,9 @@ color:purple;
     width: 200px;
     height: auto;
 }
-
+.yelp-image{
+    display: block;
+}
 
 
 
