@@ -38,16 +38,41 @@
     <!-- Show contact of user -->
     <p id="phone"> {{user_info.contact_no}}</p>
 
+  <div id="show-api-data">
+  <!-- jinja if statement if suggestions is not an empty list -->
+    <!-- {% if yelp_suggestions != [] %} -->
+      
+                <!-- print Yelp API coffee Shops suggestions -->
+        <h1>Coffee Shops,You can visit </h1>
+        {% for business in yelp_suggestions['businesses'] %}
+            <ul> <a href={{business['url']}}>{{ business['name'] }}</a>
+                <img class="yelp-image" src="{{business['image_url']}}" height="200" width="200">
+                <li>Location: {{business["location"]["address1"]}}, {{business["location"]["city"]}}</li>
+                <!-- <li>{{ business.keys() }}</li> -->
+            </ul>
+      {% endfor %}
+      
+    <!-- {% endif %} -->
+  </div>
+
 
   <script>
 
   
   "use strict";
   let phone = $('#phone');
-
+  let coffee_shops = $('#show-api-data') ;
   let hasMatched = {{ matched|tojson }};
 
-  if (hasMatched) { phone.show() };
+  if (hasMatched) { 
+      phone.show();
+      coffee_shops.show();
+    }
+  else{
+      coffee_shops.hide();
+
+    }
+
 
 
   let likeButton = $('#like');
@@ -63,6 +88,8 @@
 
       // phone.html()
       phone.show();
+      coffee_shops.show();
+
     }
       
   }
@@ -71,6 +98,9 @@
     likeButton.removeClass('liked');
     console.log(data)
     phone.hide();
+    coffee_shops.hide();
+
+
   }
 
   // TODO:
@@ -108,6 +138,8 @@
 
       likeButton.removeClass("liked");
       phone.hide();
+      coffee_shops.hide();
+
     }
 
   }
@@ -116,21 +148,5 @@
 
 
   </script>
-
-<!-- jinja if statement if suggestions is not an empty list -->
-  <!-- {% if yelp_suggestion != [] %} -->
-    <div>
-          <!-- print Yelp API coffee Shops suggestions -->
-
-      <h1>Coffee Shops,You can visit </h1>
-      {% for business in yelp_suggestions['businesses'] %}
-          <ul> <a href={{business['url']}}>{{ business['name'] }}</a>
-              <img class="yelp-image" src="{{business['image_url']}}" height="200" width="200">
-              <li>Location: {{business["location"]["address1"]}}, {{business["location"]["city"]}}</li>
-              <!-- <li>{{ business.keys() }}</li> -->
-          </ul>
-      {% endfor %}
-    </div>
-  <!-- {% endif %} -->
-
+  
 {% endblock %}

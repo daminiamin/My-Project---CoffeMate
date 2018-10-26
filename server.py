@@ -236,31 +236,34 @@ def profile(user_id):
 
 
     # If the two users are a match, then...
-    if matched == True:
-    # Make a request to the Yelp API here to get suggested date locations 
-    # based on the two users' interests
+    # if matched == True:
+        #request to the Yelp API here to get suggested date locations 
+        #based on the two users' interests
 
-    # Step 1) Get (lat, lng) coordinates for each user's city
-        c_user_city = c_user_info.city
-        another_user_city = another_user_info.city
-        
-        geolocator = Nominatim(user_agent="")
-        c_location = geolocator.geocode(c_user_city)
-        another_location = geolocator.geocode(another_user_city)
-        print((c_location.latitude, c_location.longitude))
-        print((another_location.latitude, another_location.longitude))
+        # Get(lat, lng) coordinates for each user's city
+    c_user_city = c_user_info.city
+    another_user_city = another_user_info.city
+    
+    geolocator = Nominatim(user_agent="")
+    c_location = geolocator.geocode(c_user_city)
+    another_location = geolocator.geocode(another_user_city)
+    print((c_location.latitude, c_location.longitude))
+    print((another_location.latitude, another_location.longitude))
 
-        # Calculate the midpoint
-        mid_lat = (c_location.latitude + another_location.latitude) / 2
-        mid_lng = (c_location.longitude + another_location.longitude) / 2
-        midpoint = (mid_lat, mid_lng)
-        # Step 3) Make a request to Yelp API with the midpoint coordinates
-        yelp_suggestions = yelp_api(midpoint)
+    # Calculate the midpoint
+    mid_lat = (c_location.latitude + another_location.latitude) / 2
+    mid_lng = (c_location.longitude + another_location.longitude) / 2
+    midpoint = (mid_lat, mid_lng)
+    # Make a request to Yelp API with the midpoint coordinates
+    yelp_suggestions = yelp_api(midpoint)
 
-    yelp_suggestions = []
+    # else:
+    #     yelp_suggestions = []
+    # print("outside",yelp_suggestions)
+    # TO DO , make ajax to do print all shops suggestions when user clicks on like 
 
     return render_template("profile.html", user_info=another_user_info, 
-                                        status = status ,matched = matched,
+                                            status = status ,matched = matched,
                                             yelp_suggestions=yelp_suggestions)
 
 
