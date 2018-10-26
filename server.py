@@ -1,6 +1,7 @@
 """Sample Flask app for SQLAlchemy homework."""
 from geopy.geocoders import Nominatim #for long-lat
 import requests #for api req
+import hashlib
 from pprint import pprint
 import os
 from jinja2 import StrictUndefined
@@ -35,11 +36,14 @@ def login():
 
     email = request.form["email"]
     password = request.form["password"]
+    password = password.encode() #byte code convert paswd
+    hash_pwd = hashlib.sha256(password)
+    hash_pwd = hash_pwd.hexdigest()
 
     user = User.query.filter_by(email=email).first()
 
     if user:
-        if user.password == password:
+        if user.password == hash_pwd:
             session["user_id"] = user.user_id
             flash("Logged in")
             return redirect(f"/homepage")
@@ -60,6 +64,9 @@ def set_up():
     lname = request.form["lname"]
     email = request.form["email"]
     password = request.form["password"]
+    password = password.encode() #byte code convert paswd
+    hash_pwd = hashlib.sha256(password)
+    hash_pwd = hash_pwd.hexdigest()
     
     user = User.query.filter_by(email=email).first()
     if user:
@@ -71,7 +78,7 @@ def set_up():
         session["fname"]=fname
         session["lname"]=lname
         session["email"]=email
-        session["password"]=password
+        session["password"]=hash_pwd
 
         flash("create you profile ")
 
