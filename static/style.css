@@ -35,6 +35,10 @@ label{
     font-weight: bold;
 }
 
+ul {
+    display: inline-block;
+}
+
 #firstname{
 
    text-shadow: 3px 3px pink;
@@ -47,8 +51,9 @@ color:purple;
 }
 
 #profile{
-
     color: royalblue;
+    left: 50%;
+    position: relative;
 }
 
 #Suggestions{

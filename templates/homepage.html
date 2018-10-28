@@ -3,9 +3,7 @@
 
     
   <div class="container">
-
-    <div class="row">
-      <div class="col-4 offset-8">
+      <div class="col-1 offset-11">
         <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         Account
         </button>
@@ -15,21 +13,19 @@
             <a class="dropdown-item" href="#">Delete A/C</a>
           </div>
       </div>
-    </div>
+        <a href="/logout">
+          <button type="button" class="btn btn-outline-info">Logout</button>
+        </a>
+        <a href="/connections">
+          <i size: 7x; class="fas fa-link fa-3x"></i>
+        </a>
+        <a href="/messages">
+        <span class="fa-layers fa-fw fa-3x" style="background:MistyRose">
+          <i class="fas fa-envelope"></i>
+        <span class="fa-layers-counter" style="background:Tomato"></span></a>
   </div>
   
-  <div class="container">
-    <a href="/logout">
-      <button type="button" class="btn btn-outline-info">Logout</button>
-    </a>
-    <a href="/connections">
-      <i size: 7x; class="fas fa-link fa-3x"></i>
-    </a>
-    <a href="/messages">
-      <span class="fa-layers fa-fw fa-3x" style="background:MistyRose">
-      <i class="fas fa-envelope"></i>
-      <span class="fa-layers-counter" style="background:Tomato"></span></a>
-  </div> 
+  
     
     <br>
     <br>
@@ -48,29 +44,22 @@
         <li>{{ hobbie.hobbie_name }}</li>
         {% endfor %}
         </ul>
-
   <form action="/profile">
-   <div>
-          <label id = "Suggestions">Suggestions
-            {% for person in get_allobjects %}
-              <li><div style="width: 18em;">
-                    <img src="/static/uploads{{ person.profile.filename }}" class="p" alt="image">
-                    <div class="card-body">
-                      <h5 class="card-title">{{person.fname}}</h5>
-                      <p class="card-text">{{person.lname}}
-                                          {{person.city}}
-                                          {{person.age}}</p>
-                      <a href="/profile/{{person.user_id}}" class="btn btn-primary">Visit profile</a>
-                    </div>
-                  </div>
-                   
-              </li>
-            {% endfor %}
-          </label>
-        </div>
-</form>
+      <label id = "Suggestions">Suggestions
+        {% for person in get_allobjects %}
+          <li>
+            <img src="/static/uploads/{{person.profile.filename }}" class="profile_pic" alt="image">
+            <h5 class="card-title">
+                {{person.fname}} {{person.lname}}</h5>
+                <li>City: {{person.city}}</li>
+                <li>Age: {{person.age}}</li>
+           <a href="/profile/{{person.user_id}}" class="btn btn-primary">Visit profile</a>          
+          </li>
+        {% endfor %}
+      </label>
+  </form>
 <div>  
-<p>Search People, Connect, Talk and Meet at Caffe</p>
+<p>Search People, Connect, Talk and Meet at Cafe</p>
 </div>
 
 {% endblock %}

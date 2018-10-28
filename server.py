@@ -102,6 +102,7 @@ def add_user():
     interested_in = request.form["interested_in"]
     city = request.form["city"]
     state = request.form["state"]
+    state = state.upper()
     contact = request.form["contact"]
     occupation = request.form["occupation"]
             #getting list of hobbies from user 
@@ -177,6 +178,7 @@ def homepage():
                                 (User.gender == user_info.interested_in),
                                 User_Hobbies.hobbie_id.in_(current_user_hobbies),
                                 User.user_id.notin_(list(excluded_ids))).all()
+    print(all_interest_users)
     #macthing interested_in current user 
                 # show all users who has common hobbies 
                     #get users not in excluded_ids(likes,dislikes,c.Uid)
@@ -206,7 +208,7 @@ def yelp_api(coordinates):
                                     headers=headers)
     
     data = response.json()
-    print(data)
+    # print(data)
 
     return data
 
@@ -254,8 +256,8 @@ def profile(user_id):
     geolocator = Nominatim(user_agent="")
     c_location = geolocator.geocode(c_user_city)
     another_location = geolocator.geocode(another_user_city)
-    print((c_location.latitude, c_location.longitude))
-    print((another_location.latitude, another_location.longitude))
+    # print((c_location.latitude, c_location.longitude))
+    # print((another_location.latitude, another_location.longitude))
 
     # Calculate the midpoint
     mid_lat = (c_location.latitude + another_location.latitude) / 2
@@ -263,6 +265,8 @@ def profile(user_id):
     midpoint = (mid_lat, mid_lng)
     # Make a request to Yelp API with the midpoint coordinates
     yelp_suggestions = yelp_api(midpoint)
+
+
 
     # else:
     #     yelp_suggestions = []
@@ -272,7 +276,7 @@ def profile(user_id):
     return render_template("profile.html", user_info=another_user_info, 
                                             status = status ,matched = matched,
                                             yelp_suggestions=yelp_suggestions)
-
+# TO DO : you are match but you're too far
 
 @app.route('/logout')
 def logout():
@@ -425,6 +429,7 @@ def change_profile():
 @app.route('/delete-account',methods=['GET'])
 def delete_account():
     """ delete account"""
+
 
 ##########Test Route##################
 

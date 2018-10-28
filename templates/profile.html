@@ -14,13 +14,13 @@
       <h4 class="user-name">{{user_info.fname}} {{user_info.lname}}</h4>
     </div>
       <div>
-        <p>Age:{{user_info.age}}</p>
-        <p>City:{{user_info.city}}</p>
+        <p>Age: {{user_info.age}}</p>
+        <p>City: {{user_info.city}}</p>
         <p>Hobbies:
         {% for hobbie in user_info.hobbies %}
         <li>{{hobbie.hobbie_name}}</li>
         {% endfor %}</p>
-        <p>About me: {{user_info.yourself}}</p>
+        <p>About me : {{user_info.yourself}}</p>
       </div>
     <i class="fas fa-heart fa-3x"></i>
     <button

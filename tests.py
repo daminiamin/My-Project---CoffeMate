@@ -60,7 +60,7 @@ class LoggedInTestCase(unittest.TestCase):
         self.assertIn(b"Home",result.data)
 
 
-        self.assertNotIn(b"Nice to meet you ",result.data)
+        self.assertNotIn(b"Visit profile",result.data)
 
 
     def test_logout(self):
@@ -95,15 +95,15 @@ class LoggedOutTestCase(unittest.TestCase):
     def test_login(self):
         """ Checking login successfully"""
         result = self.client.post('/login',
-                                  data={'email': 'dp@gmail.com',
-                                        'password':'dp111'}, 
+                                  data={'email': 'damini.amin1@gmail.com',
+                                        'password':'123'}, 
                                   follow_redirects=True) #make it false to check data
 
 
         # check that user id is in session
         with self.client as c:
             with c.session_transaction() as sess:
-                self.assertEqual(sess['user_id'], 1)
+                self.assertEqual(sess['user_id'], 8)
                 self.assertIn(b'Nice to meet you !', result.data)
 
 

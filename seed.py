@@ -53,10 +53,15 @@ def load_users():
                 password="hr123",age=40, gender="M",interested_in ="F",
                 city="Palo Alto",state="CA",contact_no="9227155913",
                 occupation="Actor")
+    damini = User(fname="Damini ",lname="Amin",email="damini.amin1@gmail.com",
+                password="a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3",
+                age=18, gender="M",interested_in ="F",
+                city="Palo Alto",state="CA",contact_no="9223559130",
+                occupation="Actor")
 
    
 
-    db.session.add_all([deepika,ranvir, diya,katrina,esha,hrithik,akshay])
+    db.session.add_all([deepika,ranvir, diya,katrina,esha,hrithik,akshay,damini])
     db.session.commit()
 
 
@@ -65,6 +70,7 @@ def load_users():
     hobbie3 = Hobbie(hobbie_name="cooking")
     hobbie4 = Hobbie(hobbie_name="drawing")
     hobbie5 = Hobbie(hobbie_name="knitting")
+
 
     db.session.add_all([hobbie1, hobbie2, hobbie3,hobbie4,hobbie5])
     db.session.commit()
@@ -78,13 +84,15 @@ def load_users():
     akshay.hobbies.append(hobbie3)
     katrina.hobbies.append(hobbie5)
     deepika.hobbies.append(hobbie5)
+    damini.hobbies.append(hobbie5)
+
 
 
     db.session.commit()
     # deepika.likes.append(hrithik)
     like1 = Like(likes_user = deepika,liked_user=hrithik)
     like2 = Like(likes_user = ranvir,liked_user= hrithik)
-    like3 = Like(likes_user = akshay,liked_user= katrina)
+    like3 = Like(likes_user = akshay,liked_user= damini)
     like4 = Like(likes_user = ranvir,liked_user= deepika)
     like5 = Like(likes_user = deepika,liked_user= ranvir)
     like6 = Like(likes_user = esha,liked_user= hrithik)
@@ -109,8 +117,10 @@ def load_users():
     img3 = Image(user=diya,filename="pqy")
     img4 = Image(user=ranvir,filename="5_rv.png")
     img5 = Image(user=esha,filename="vvv")
+    img6 = Image(user=damini,filename="vvv.png")
 
-    db.session.add_all([img1, img2, img3,img4,img5])
+
+    db.session.add_all([img1, img2, img3,img4,img5,img6])
     db.session.commit()
     #making profile pic saparate 
     akshay.profile = img1
@@ -118,6 +128,8 @@ def load_users():
     diya.profile = img3
     ranvir.profile = img4
     esha.profile = img5
+    damini.profile = img6
+
 
 
     db.session.commit()
