@@ -22,37 +22,41 @@
         {% endfor %}</p>
         <p>About me : {{user_info.yourself}}</p>
       </div>
-    <i class="fas fa-heart fa-3x"></i>
+    
     <button
       id="like"
       data-liked-user-id='{{ user_info.user_id }}'
       type="button"
-      class="btn btn-outline-info{% if status == 'liked' %} liked{% endif %}">Like</button>
+      class="like-button {% if status == 'liked' %} liked{% endif %}">
+        <i class="fas fa-heart fa-3x like-icon"></i>
+      </button>
     
     <button
       id="dislike"
       data-disliked-user-id='{{ user_info.user_id }}'
       type="button"
-      class="btn btn-outline-info{% if status == 'disliked' %} disliked{% endif %}">Dislike</button>
+      class="disliked-button {% if status == 'disliked' %} disliked{% endif %}">
+        <i class="fas fa-times-circle fa-3x dislike-icon"></i>
+      </button>
 
     <!-- Show contact of user -->
     <p id="phone"> {{user_info.contact_no}}</p>
 
   <div id="show-api-data">
-  <!-- jinja if statement if suggestions is not an empty list -->
-    <!-- {% if yelp_suggestions != [] %} -->
-      
-                <!-- print Yelp API coffee Shops suggestions -->
+      {% if yelp_suggestions != [] %}
         <h1>Coffee Shops,You can visit </h1>
+        <!-- print Yelp API coffee Shops suggestions -->
         {% for business in yelp_suggestions['businesses'] %}
             <ul> <a href={{business['url']}}>{{ business['name'] }}</a>
                 <img class="yelp-image" src="{{business['image_url']}}" height="200" width="200">
                 <li>Location: {{business["location"]["address1"]}}, {{business["location"]["city"]}}</li>
                 <!-- <li>{{ business.keys() }}</li> -->
             </ul>
-      {% endfor %}
+        {% endfor %}
+      {% else %}
+        <span>You don't have sugesstions.</span>
+      {% endif %}
       
-    <!-- {% endif %} -->
   </div>
 
 

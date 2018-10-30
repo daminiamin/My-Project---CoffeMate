@@ -11,13 +11,6 @@
 #phone{
     display: none;
 }
-.liked {
-    background-color: red;
-}
-
-.disliked {
-    background-color: red;
-}
 
 #flash{
 color: lightblue;
@@ -68,8 +61,36 @@ color:purple;
 }
 
 
+.like-icon, .dislike-icon {
+    color: #DDDDDD;
+}
 
+.like-icon:hover {
+    color: #b57293;
+}
 
+.liked {
+    color: #85144b;
+    -webkit-text-fill-color: #85144b;
+}
+
+.dislike-icon:hover {
+    color: #585858;
+}
+
+.disliked {
+    color: #111111;
+    -webkit-text-fill-color: #111111;
+}
+
+.like-button, .disliked-button {
+    border: none;
+    background-color: none;
+}
+
+button:focus {
+    outline: none;
+}
 
 
 

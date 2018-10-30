@@ -1,5 +1,6 @@
 """Sample Flask app for SQLAlchemy homework."""
 from geopy.geocoders import Nominatim #for long-lat
+from geopy import distance
 import requests #for api req
 import hashlib
 from pprint import pprint
@@ -160,7 +161,7 @@ def homepage():
     user_id = session["user_id"]
     user_info = User.query.get(user_id) #current user info
     # print(f"user_info {user_info}")
-
+    
     get_likes = user_info.likes #list of all users liked by current user.
     liked_ids = set([like.liked_user_id for like in get_likes])
 
@@ -178,7 +179,7 @@ def homepage():
                                 (User.gender == user_info.interested_in),
                                 User_Hobbies.hobbie_id.in_(current_user_hobbies),
                                 User.user_id.notin_(list(excluded_ids))).all()
-    print(all_interest_users)
+    # print(all_interest_users)
     #macthing interested_in current user 
                 # show all users who has common hobbies 
                     #get users not in excluded_ids(likes,dislikes,c.Uid)
@@ -208,9 +209,9 @@ def yelp_api(coordinates):
                                     headers=headers)
     
     data = response.json()
-    # print(data)
 
     return data
+
 
 @app.route('/profile/<int:user_id>')
 def profile(user_id):
@@ -244,40 +245,35 @@ def profile(user_id):
         matched = False
 
 
-    # If the two users are a match, then...
-    # if matched == True:
-        #request to the Yelp API here to get suggested date locations 
-        #based on the two users' interests
-
-        # Get(lat, lng) coordinates for each user's city
-    c_user_city = c_user_info.city
-    another_user_city = another_user_info.city
+    c_user_city = c_user_info.city #current user's city
+    another_user_city = another_user_info.city # another user's city
     
     geolocator = Nominatim(user_agent="")
-    c_location = geolocator.geocode(c_user_city)
+
+    c_location = geolocator.geocode(c_user_city)   # saves like this ->
+        #('Palo Alto, Santa Clara County, California, USA', (37.4455862, -122.1619289))
     another_location = geolocator.geocode(another_user_city)
-    # print((c_location.latitude, c_location.longitude))
-    # print((another_location.latitude, another_location.longitude))
 
     # Calculate the midpoint
     mid_lat = (c_location.latitude + another_location.latitude) / 2
     mid_lng = (c_location.longitude + another_location.longitude) / 2
-    midpoint = (mid_lat, mid_lng)
+    midpoint = (mid_lat, mid_lng) 
+
+    # import pdb; pdb.set_trace()
+
+    #find distance of users
+    distance_of_users = distance.distance(c_location.point, another_location.point).miles
+
+    if distance_of_users > 50:
+        yelp_suggestions = []
     # Make a request to Yelp API with the midpoint coordinates
-    yelp_suggestions = yelp_api(midpoint)
+    else:
+        yelp_suggestions = yelp_api(midpoint)
 
-
-
-    # else:
-    #     yelp_suggestions = []
-    # print("outside",yelp_suggestions)
-    # TO DO , make ajax to do print all shops suggestions when user clicks on like 
 
     return render_template("profile.html", user_info=another_user_info, 
-                                            status = status ,matched = matched,
+                                            status = status, matched = matched,
                                             yelp_suggestions=yelp_suggestions)
-# TO DO : you are match but you're too far
-
 @app.route('/logout')
 def logout():
     """logout page"""
