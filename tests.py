@@ -7,6 +7,7 @@ import server
 from model import db, connect_to_db, User
 from seed import load_users 
 
+
 class MyAppIntegrationTestCase(unittest.TestCase):
     """Testing of integration tests: testing Flask server."""
 

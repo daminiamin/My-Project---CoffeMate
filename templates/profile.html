@@ -29,7 +29,7 @@
       type="button"
       class="like-button {% if status == 'liked' %} liked{% endif %}">
         <i class="fas fa-heart fa-3x like-icon"></i>
-      </button>
+    </button>
     
     <button
       id="dislike"
@@ -37,10 +37,18 @@
       type="button"
       class="disliked-button {% if status == 'disliked' %} disliked{% endif %}">
         <i class="fas fa-times-circle fa-3x dislike-icon"></i>
-      </button>
+    </button>
 
     <!-- Show contact of user -->
     <p id="phone"> {{user_info.contact_no}}</p>
+
+    <a href="/authorize">
+      <button id = "send-email" type="button">
+        <span class="fa-layers fa-fw fa-3x" style="background:MistyRose">
+          <i class="fas fa-envelope"></i>
+        </span>
+      </button>
+    </a>
 
   <div id="show-api-data">
       {% if yelp_suggestions != [] %}
@@ -65,15 +73,18 @@
   
   "use strict";
   let phone = $('#phone');
+  let email = $('#email');
   let coffee_shops = $('#show-api-data') ;
   let hasMatched = {{ matched|tojson }};
 
   if (hasMatched) { 
       phone.show();
       coffee_shops.show();
+      email.show();
     }
   else{
       coffee_shops.hide();
+      email.hide();
 
     }
 
@@ -93,9 +104,8 @@
       // phone.html()
       phone.show();
       coffee_shops.show();
-
-    }
-      
+      email.show();
+    }      
   }
   
   function unlikeResult(data) {
@@ -103,8 +113,7 @@
     console.log(data)
     phone.hide();
     coffee_shops.hide();
-
-
+    email.hide();
   }
 
   // TODO:
@@ -143,6 +152,7 @@
       likeButton.removeClass("liked");
       phone.hide();
       coffee_shops.hide();
+      email.hide();
 
     }
 

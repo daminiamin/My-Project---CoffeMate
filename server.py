@@ -7,7 +7,7 @@ from pprint import pprint
 import os
 from jinja2 import StrictUndefined
 import json
-from flask import Flask, render_template,jsonify,request,flash,redirect,session
+from flask import Flask, render_template,jsonify,request,flash,redirect,session,url_for
 from flask_debugtoolbar import DebugToolbarExtension
 from random import sample
 from werkzeug.utils import secure_filename
@@ -17,13 +17,225 @@ UPLOAD_FOLDER = 'static/uploads'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
 
+#######Google Stuff ########
+import google.oauth2.credentials
+import google_auth_oauthlib.flow
+import googleapiclient.discovery
+import googleapiclient.errors
+######################## Creating/Sending Email ###########################################
+
+import base64
+from email.mime.text import MIMEText
+
+###############################################################
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.secret_key = 'DKAMIN'
+app.secret_key = 'uc'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 yelp_api_key = os.environ['YELP_KEY']   #Yelp key 
 yelp_url = "https://api.yelp.com/v3/businesses" #yelp url
+
+################################################################################
+
+
+# stores a file that contains the OAuth 2.0 information including its 
+# client_id and client_secret.
+CLIENT_SECRETS_FILE = "client_secrets.json"
+
+SCOPES = ['https://mail.google.com/']
+API_SERVICE_NAME = 'gmail'
+API_VERSION = 'v1'
+
+os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
+
+
+def create_message(sender, to, subject, message_text):
+    """Create a message for an email.
+    Args:
+    sender: Email address of the sender.
+    to: Email address of the receiver.
+    subject: The subject of the email message.
+    message_text: The text of the email message.
+
+    Returns:
+    An object containing a base64url encoded email object.
+    """
+    message = MIMEText(message_text)
+    message['to'] = to
+    message['from'] = sender
+    message['subject'] = subject
+    message_bytes = message.as_bytes() # turn MIMETEXT into byte string
+    # encode byte string to base64 encoding and then decode the result into a regular string
+    result = {'raw': base64.urlsafe_b64encode(message_bytes).decode()}
+    print(result)
+    return result
+
+
+def send_message(service, user_id, message):
+    """Send an email message.
+
+    Args:
+    service: Authorized Gmail API service instance.
+    user_id: User's email address. The special value "me"
+    can be used to indicate the authenticated user.
+    message: Message to be sent.
+
+    Returns:
+    Sent Message.
+    """
+    try:
+        message = (service.users().messages().send(userId=user_id, body=message)
+                   .execute())
+        print("Message Id: %s" % message['id'])
+        return message
+
+    except googleapiclient.errors.HttpError as error:
+        print("An error occurred: %s" % error)
+        return error
+
+
+@app.route('/send_email')
+def send_email():
+    """ This is the route that should accept data from an email form"""
+    # message = request.args.get('message')
+
+    subject = "Testing sending email"
+    message = "Hello gmail, this is test from python"
+    sender = 'amindamini5@gmail.com'
+    recipient = 'amindamini5@gmail.com'
+
+    if 'credentials' not in session:
+        return redirect('/authorize')
+
+    # Load credentials from the session.
+    credentials = google.oauth2.credentials.Credentials(
+        **session['credentials'])
+
+    gmail = googleapiclient.discovery.build(
+                        API_SERVICE_NAME, API_VERSION, credentials=credentials)
+                        # call version 1 of the gmail API:
+
+    session['credentials'] = credentials_to_dict(credentials)
+
+    email = create_message(sender, recipient, subject, message)
+    result = send_message(gmail, "me", email)
+    print(result)
+
+    return "Email sent"
+################################################################################
+
+# TODO
+# On your profile page...
+# Add an event listener to your "Email this person" button.
+# When that button is clicked, send a request to the '/authorize' route on the server
+
+# After user is successfully authorized...
+# In javascript, pop up a modal form for them to enter their message.
+# WHen they click the "Send email" button, send a request to "/send_email" route that will use gmail api to send the email.
+
+
+@app.route('/test')
+def test_api_request():
+    if 'credentials' not in session:
+        return redirect('/authorize')
+
+    # Load credentials from the session.
+    credentials = google.oauth2.credentials.Credentials(
+        **session['credentials'])
+
+    gmail = googleapiclient.discovery.build(
+                        API_SERVICE_NAME, API_VERSION, credentials=credentials)
+                        # call version 1 of the gmail API:
+
+    print(dir(gmail))
+
+    session['credentials'] = credentials_to_dict(credentials)
+
+    return "gmail authorized"
+
+
+@app.route('/authorize')
+def authorize():
+    if 'credentials' in session:
+        return "User already authorized"
+
+    # Create flow instance to manage the OAuth 2.0 Authorization Grant Flow steps.
+    flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file(
+        CLIENT_SECRETS_FILE, scopes=SCOPES)
+
+    flow.redirect_uri = url_for('oauth2callback', _external=True)
+
+    authorization_url, state = flow.authorization_url(
+        # Enable offline access so that you can refresh an access token without
+        # re-prompting the user for permission. Recommended for web server apps.
+        access_type='offline',
+        # Enable incremental authorization. Recommended as a best practice.
+        include_granted_scopes='true') #####??????????
+
+    # Store the state so the callback can verify the auth server response.
+    session['state'] = state
+    return redirect(authorization_url)
+
+
+@app.route('/oauth2callback')
+def oauth2callback():
+    # Specify the state when creating the flow in the callback so that it can
+    # verified in the authorization server response.
+    state = session['state']
+
+    flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file(
+        CLIENT_SECRETS_FILE, scopes=SCOPES, state=state)
+    flow.redirect_uri = url_for('oauth2callback', _external=True)
+    # Use the authorization server's response to fetch the OAuth 2.0 tokens.
+    authorization_response = request.url
+    flow.fetch_token(authorization_response=authorization_response)
+
+    # Store credentials in the session.
+    # ACTION ITEM: In a production app, you likely want to save these
+    #              credentials in a persistent database instead.
+    credentials = flow.credentials
+    session['credentials'] = credentials_to_dict(credentials)
+
+    return redirect('/send_email')
+
+def credentials_to_dict(credentials):
+    return {'token': credentials.token,
+          'refresh_token': credentials.refresh_token,
+          'token_uri': credentials.token_uri,
+          'client_id': credentials.client_id,
+          'client_secret': credentials.client_secret,
+          'scopes': credentials.scopes}
+
+
+@app.route('/revoke')
+def revoke():
+  if 'credentials' not in session:
+    return ('You need to <a href="/authorize">authorize</a> before ' +
+            'testing the code to revoke credentials.')
+
+  credentials = google.oauth2.credentials.Credentials(
+    **session['credentials'])
+
+  revoke = requests.post('https://accounts.google.com/o/oauth2/revoke',
+      params={'token': credentials.token},
+      headers = {'content-type': 'application/x-www-form-urlencoded'})
+
+  status_code = getattr(revoke, 'status_code')
+  if status_code == 200:
+    return('Credentials successfully revoked.')
+  else:
+    return('An error occurred.' )
+
+
+@app.route('/clear')
+def clear_credentials():
+  if 'credentials' in session:
+    del session['credentials']
+  return ('Credentials have been cleared.<br><br>')
+
+
+
 
 
 @app.route('/', methods=['GET'])
@@ -280,6 +492,8 @@ def logout():
 
 
     session.pop('user_id')
+    if 'credentials' in session:
+        del session['credentials']
     return redirect("/")
 
 ############## LIKE ############################
@@ -434,7 +648,6 @@ def delete_account():
 # @app.route('/test', methods=["GET"])
 # def yelp_api():
 
-
     # headers = {'Authorization': 'Bearer ' + yelp_api_key}
 
     # payload = {'location': 'santa clara','term': 'Coffee Shop', 'limit': 5}
@@ -444,7 +657,10 @@ def delete_account():
     #                         headers=headers)
     # data = response.json()
 
+
     # return render_template("test.html",data=data)
+
+
 
 ##########################
 
