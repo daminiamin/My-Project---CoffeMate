@@ -125,36 +125,6 @@ def send_email():
     return "Email sent"
 ################################################################################
 
-# TODO
-# On your profile page...
-# Add an event listener to your "Email this person" button.
-# When that button is clicked, send a request to the '/authorize' route on the server
-
-# After user is successfully authorized...
-# In javascript, pop up a modal form for them to enter their message.
-# WHen they click the "Send email" button, send a request to "/send_email" route that will use gmail api to send the email.
-
-
-# @app.route('/test')
-# def test_api_request():
-#     if 'credentials' not in session:
-#         return redirect('/authorize')
-
-#     # Load credentials from the session.
-#     credentials = google.oauth2.credentials.Credentials(
-#         **session['credentials'])
-
-#     gmail = googleapiclient.discovery.build(
-#                         API_SERVICE_NAME, API_VERSION, credentials=credentials)
-#                         # call version 1 of the gmail API:
-
-#     print(dir(gmail))
-
-#     session['credentials'] = credentials_to_dict(credentials)
-
-#     return "gmail authorized"
-
-
 @app.route('/authorize')
 def authorize():
     if 'credentials' in session:
@@ -642,8 +612,8 @@ def delete_account():
 
 
 
-# @app.route('/test', methods=["GET"])
-# def yelp_api():
+@app.route('/test', methods=["GET"])
+def test():
 
     # headers = {'Authorization': 'Bearer ' + yelp_api_key}
 
@@ -655,7 +625,7 @@ def delete_account():
     # data = response.json()
 
 
-    # return render_template("test.html",data=data)
+    return render_template("test.html")
 
 
 
