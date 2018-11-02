@@ -19,9 +19,12 @@
         <a href="/connections">
           <i size: 7x; class="fas fa-link fa-3x"></i>
         </a>  
+        {% if 'credentials' not in session %}
+                <a href="/authorize">
+              <button>Authorize</button>
+            </a>
+        {% endif %}
       </div>
-  
-  
     
     <br>
     <br>

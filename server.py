@@ -50,7 +50,7 @@ API_VERSION = 'v1'
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 
 
-def create_message(sender, to, subject, message_text):
+def create_message(to, subject, message_text):
     """Create a message for an email.
     Args:
     sender: Email address of the sender.
@@ -63,7 +63,6 @@ def create_message(sender, to, subject, message_text):
     """
     message = MIMEText(message_text)
     message['to'] = to
-    message['from'] = sender
     message['subject'] = subject
     message_bytes = message.as_bytes() # turn MIMETEXT into byte string
     # encode byte string to base64 encoding and then decode the result into a regular string
@@ -100,13 +99,14 @@ def send_email():
     """ This is the route that should accept data from an email form"""
     # message = request.args.get('message')
 
-    subject = "Testing sending email"
-    message = "Hello gmail, this is test from python"
-    sender = 'amindamini5@gmail.com'
-    recipient = 'amindamini5@gmail.com'
+    recipient =request.args["recipient-email"]
+    subject = request.args["subject"]
+    message = request.args["message"]
+    
 
+    # If user is not authorized...
     if 'credentials' not in session:
-        return redirect('/authorize')
+        return "Please authorize first on homepage"
 
     # Load credentials from the session.
     credentials = google.oauth2.credentials.Credentials(
@@ -118,7 +118,7 @@ def send_email():
 
     session['credentials'] = credentials_to_dict(credentials)
 
-    email = create_message(sender, recipient, subject, message)
+    email = create_message(recipient, subject, message)
     result = send_message(gmail, "me", email)
     print(result)
 
@@ -135,30 +135,30 @@ def send_email():
 # WHen they click the "Send email" button, send a request to "/send_email" route that will use gmail api to send the email.
 
 
-@app.route('/test')
-def test_api_request():
-    if 'credentials' not in session:
-        return redirect('/authorize')
+# @app.route('/test')
+# def test_api_request():
+#     if 'credentials' not in session:
+#         return redirect('/authorize')
 
-    # Load credentials from the session.
-    credentials = google.oauth2.credentials.Credentials(
-        **session['credentials'])
+#     # Load credentials from the session.
+#     credentials = google.oauth2.credentials.Credentials(
+#         **session['credentials'])
 
-    gmail = googleapiclient.discovery.build(
-                        API_SERVICE_NAME, API_VERSION, credentials=credentials)
-                        # call version 1 of the gmail API:
+#     gmail = googleapiclient.discovery.build(
+#                         API_SERVICE_NAME, API_VERSION, credentials=credentials)
+#                         # call version 1 of the gmail API:
 
-    print(dir(gmail))
+#     print(dir(gmail))
 
-    session['credentials'] = credentials_to_dict(credentials)
+#     session['credentials'] = credentials_to_dict(credentials)
 
-    return "gmail authorized"
+#     return "gmail authorized"
 
 
 @app.route('/authorize')
 def authorize():
     if 'credentials' in session:
-        return "User already authorized"
+        return redirect('/homepage')
 
     # Create flow instance to manage the OAuth 2.0 Authorization Grant Flow steps.
     flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file(
@@ -196,8 +196,8 @@ def oauth2callback():
     #              credentials in a persistent database instead.
     credentials = flow.credentials
     session['credentials'] = credentials_to_dict(credentials)
-
-    return redirect('/send_email')
+    flash("User authorized")
+    return redirect('/homepage')
 
 def credentials_to_dict(credentials):
     return {'token': credentials.token,
@@ -233,9 +233,6 @@ def clear_credentials():
   if 'credentials' in session:
     del session['credentials']
   return ('Credentials have been cleared.<br><br>')
-
-
-
 
 
 @app.route('/', methods=['GET'])

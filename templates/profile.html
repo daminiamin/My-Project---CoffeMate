@@ -39,17 +39,17 @@
         <i class="fas fa-times-circle fa-3x dislike-icon"></i>
     </button>
 
-    <!-- Show contact of user -->
-    <p id="phone"> {{user_info.contact_no}}</p>
-
-    <a href="/authorize">
-      <button id = "send-email" type="button">
-        <span class="fa-layers fa-fw fa-3x" style="background:MistyRose">
+    <button id="send-email" type="button" data-toggle="modal" 
+            data-target="#emailModal" style="background: white; border-color: white; margin:0">
+        <span class="fa-layers fa-fw fa-3x" style="color:MistyRose">
           <i class="fas fa-envelope"></i>
         </span>
-      </button>
-    </a>
+    </button>
 
+    <!-- Show contact of user -->
+    <p id="phone"> {{user_info.contact_no}}</p>
+  
+  <!-- Show Yelp sugestions -->
   <div id="show-api-data">
       {% if yelp_suggestions != [] %}
         <h1>Coffee Shops,You can visit </h1>
@@ -64,103 +64,168 @@
       {% else %}
         <span>You don't have sugesstions.</span>
       {% endif %}
-      
   </div>
+
+  <!-- Email modal -->
+  <div class="modal fade" id="emailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <form id="email-form">
+        <div class="modal-body">
+          
+            <div class="form-group">
+              <label for="recipient-name" class="col-form-label">Recipient:</label>
+              <input type="text" name="recipient-email" class="form-control" id="recipient-email" value="{{user_info.email}}">
+            </div>
+            <div class="form-group">
+              <label for="subject" class="col-form-label">Subject:</label>
+              <input type="text" name="subject" class="form-control" id="subject">
+            </div>
+            <div class="form-group">
+              <label for="message-text" class="col-form-label">Message:</label>
+              <textarea class="form-control" name="message" id="message-text"></textarea>
+            </div>
+          
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Send message</button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+
 
 
   <script>
+    "use strict";
+    
+    let hasMatched = {{ matched|tojson }};
 
-  
-  "use strict";
-  let phone = $('#phone');
-  let email = $('#email');
-  let coffee_shops = $('#show-api-data') ;
-  let hasMatched = {{ matched|tojson }};
+    let phone = $('#phone');
+    let coffee_shops = $('#show-api-data') ;
+    
+    
+    let email = $('#send-email');
+    let emailForm = $("#email-form");
 
-  if (hasMatched) { 
-      phone.show();
-      coffee_shops.show();
-      email.show();
+    let likeButton = $('#like');
+    let dislikeButton = $('#dislike');
+
+    //////////////////////////////////////////////////////////////////////////////
+    // show or hide info based on match (or not)
+    if (hasMatched) { 
+        phone.show();
+        coffee_shops.show();
+        email.show();
+      }
+    else{
+        coffee_shops.hide();
+        email.hide();
+      }
+    //////////////////////////////////////////////////////////////////////////////
+    // Like and dislike buttons
+    function likeResult(data) {
+      console.log(data);
+      likeButton.addClass("liked");
+      dislikeButton.removeClass("disliked");
+
+      // if liked_back is true, phone.html( PHONE NUMBER HERE ) and phone.show();
+      if (data.liked_back == true){
+
+        // phone.html()
+        phone.show();
+        coffee_shops.show();
+        email.show();
+      }      
     }
-  else{
-      coffee_shops.hide();
-      email.hide();
-
-    }
-
-
-
-  let likeButton = $('#like');
-  let dislikeButton = $('#dislike');
-  
-  function likeResult(data) {
-    console.log(data);
-    likeButton.addClass("liked");
-    dislikeButton.removeClass("disliked");
-
-    // if liked_back is true, phone.html( PHONE NUMBER HERE ) and phone.show();
-    if (data.liked_back == true){
-
-      // phone.html()
-      phone.show();
-      coffee_shops.show();
-      email.show();
-    }      
-  }
-  
-  function unlikeResult(data) {
-    likeButton.removeClass('liked');
-    console.log(data)
-    phone.hide();
-    coffee_shops.hide();
-    email.hide();
-  }
-
-  // TODO:
-  // check data for status if status is ok update the classes
-  // check data for liked back and if it's true then get phoneno and display it
-
-  function processLikedclick() {
-    if (likeButton.hasClass('liked')) {
-      // unlike
-      $.post('/unlike', likeButton.data(), unlikeResult); // data looks like this... {likedUserId: 9}
-    } else {
-      // like
-      $.post('/like', likeButton.data(), likeResult);
-           // route, data from button(id), callback()
-    }
-  }
-
-  likeButton.on('click', processLikedclick);
-
-
-  function processDislikedclick() { // data looks like this... {dislikedUserId: 9}
-    if (dislikeButton.hasClass('disliked')){
-
-      // undislike
-      dislikeButton.removeClass('disliked');
-
-      // ajax post request to server including id of user profile
-      $.post('/undislike',dislikeButton.data(), function(data) { console.log(data); });
-
-    } else{
-      // dislike
-      dislikeButton.addClass('disliked');
-      $.post('/dislike',dislikeButton.data(), unlikeResult);
-            // route, data from button(id), callback()
-
-      likeButton.removeClass("liked");
+    
+    function unlikeResult(data) {
+      likeButton.removeClass('liked');
+      console.log(data)
       phone.hide();
       coffee_shops.hide();
       email.hide();
+    }
+
+    function processLikedclick() {
+      if (likeButton.hasClass('liked')) {
+        // unlike
+        $.post('/unlike', likeButton.data(), unlikeResult); // data looks like this... {likedUserId: 9}
+      } else {
+        // like
+        $.post('/like', likeButton.data(), likeResult);
+             // route, data from button(id), callback()
+      }
+    }
+
+    likeButton.on('click', processLikedclick);
+
+
+    function processDislikedclick() { // data looks like this... {dislikedUserId: 9}
+      if (dislikeButton.hasClass('disliked')){
+
+        // undislike
+        dislikeButton.removeClass('disliked');
+
+        // ajax post request to server including id of user profile
+        $.post('/undislike',dislikeButton.data(), function(data) { console.log(data); });
+
+      } else{
+        // dislike
+        dislikeButton.addClass('disliked');
+        $.post('/dislike',dislikeButton.data(), unlikeResult);
+              // route, data from button(id), callback()
+
+        likeButton.removeClass("liked");
+        phone.hide();
+        coffee_shops.hide();
+        email.hide();
+
+      }
 
     }
 
-  }
+    dislikeButton.on('click', processDislikedclick);
+    //////////////////////////////////////////////////////////////////////////////
+    // Sending email
 
-  dislikeButton.on('click', processDislikedclick);
 
 
+    function sendEmail(evt) {
+      let recipient = $('#recipient-email').val();
+      let subject = $('#subject').val();
+      let message = $('#message-text').val();
+
+      evt.preventDefault();
+
+      let formData = {
+        'recipient-email': recipient,
+        'subject': subject,
+        'message': message
+      };
+
+      $.get('/send_email', formData, function(data) {
+        alert(data);
+      })
+    };
+    
+    emailForm.on('submit', sendEmail);
+
+
+
+  //////////////////////////////////////////////////////////////////////////////
   </script>
   
 {% endblock %}
