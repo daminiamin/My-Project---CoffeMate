@@ -3,32 +3,10 @@
 {% block title %} CoffeeMate{% endblock %}
 {% block content %}
   
-  <body class="bgland">
-    <h1>Coffe Mate</h1>
-
-    <h2>Connect with people</h2>
-      <div class="container">
-
-          <div class="row">
-            <div class="col-6 col-md-3 order-md-2">
-              <h4>Login</h4>
-              <form action="/login" method="POST">
-                <label>Email:
-                  <input type="email" name="email" required>
-                </label>
-                <br>
-                <label>Password:
-                  <input type="password" name="password" required>
-                </label>
-                  <br>
-                  <input type="submit" value="Log In">
-              </form>
-            </div>
-          </div>
-
+  <body class="bgland">    
       <div class="row">
         <div class="col-6 col-md-9 order-md-1">
-          <h4> SignUp</h4>
+          <h4> Sign Up</h4>
           <form action="/set-up" method="POST">
             <label>First Name:
               <input type="text" name="fname" required>
@@ -50,10 +28,5 @@
           </form>            
         </div>
       </div>
-
-
-
-
-
-</body>
+  </body>
 {% endblock %}

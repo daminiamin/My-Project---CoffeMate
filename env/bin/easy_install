@@ -1,4 +1,4 @@
-#!/home/vagrant/src/coffee-mate/env/bin/python3.6
+#!/home/vagrant/src/coffee_mate/env/bin/python3.6
 
 # -*- coding: utf-8 -*-
 import re

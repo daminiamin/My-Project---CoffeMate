@@ -1,4 +1,4 @@
-#!/home/vagrant/src/coffee-mate/env/bin/python
+#!/home/vagrant/src/coffee_mate/env/bin/python
 
 import sys
 import getopt

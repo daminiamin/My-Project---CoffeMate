@@ -1,21 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
-
+<div class="homepage-bg">
     
-  <div class="container">
-      <div class="col-1 offset-11">
-        <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Account
-        </button>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">Change info</a>
-            <a class="dropdown-item" href="#">Profile Pic</a>
-            <a class="dropdown-item" href="#">Delete A/C</a>
-          </div>
-      </div>
-        <a href="/logout">
-          <button type="button" class="btn btn-outline-info">Logout</button>
-        </a>
         <a href="/connections">
           <i size: 7x; class="fas fa-link fa-3x"></i>
         </a>  
@@ -43,22 +29,63 @@
         <li>{{ hobbie.hobbie_name }}</li>
         {% endfor %}
         </ul>
-  <form action="/profile">
-      <label id = "Suggestions">Suggestions
+<!-- profile porfolio -->
+<form action="/profile">
+
+  <section class="portfolio bg-light">
+    <div class="container text-center">
+      <h1> Suggestions</h1>
+      <p> abcdckdskjcdkscjd</p>
         {% for person in get_allobjects %}
-          <li>
-            <img src="/static/uploads/{{person.profile.filename }}" class="profile_pic" alt="image">
-            <h5 class="card-title">
-                {{person.fname}} {{person.lname}}</h5>
-                <li>City: {{person.city}}</li>
-                <li>Age: {{person.age}}</li>
-           <a href="/profile/{{person.user_id}}" class="btn btn-primary">Visit profile</a>          
-          </li>
+
+        <div class="row">
+          <div class="col-lg-4 col-md-4 col-sm-12 col-10 d-block m-auto">
+            <div class="card">
+
+                <img src="/static/uploads/{{person.profile.filename }}" class="card-img img-fluid">
+                  <div class="card-body">
+                    <h2 class="card-title"> {{person.fname}} {{person.lname}}</h2>
+                    <p class="card-text"> City: {{person.city}}</p>
+                    <p class="card-text"> Age: {{person.age}}</p>
+                    <a href="/profile/{{person.user_id}}" class="btn btn-primary">Visit profile</a>          
+                  </div>
+     
+            </div>
+          </div>
+        </div>
+
         {% endfor %}
-      </label>
+
+      </div>
+  </section>
   </form>
-<div>  
-<p>Search People, Connect, Talk and Meet at Cafe</p>
+
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                 
+            
+     
+  
 
 {% endblock %}

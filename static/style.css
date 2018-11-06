@@ -1,3 +1,86 @@
+
+
+.main-bgimg{
+    background-image: url("/static/bg.jpg");
+    background-size: 100% 100%;
+    background-attachment: fixed;
+    height:660px;    
+}
+
+
+.applogo{
+  font-size:180%;
+  font-family: 'Monoton', cursive;
+
+
+}
+
+.d3{
+  border-radius: 200%;
+  height: 150px;
+  /*width: 150px;*/
+}
+
+body { font-family: "Raleway", sans-serif; }
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Ubuntu", serif;
+  font-weight:  700;
+}
+
+
+.headerset{
+    padding-top: 250px;
+    box-sizing: border-box;
+
+}
+.headerset h2{
+    font-size: 32px;
+}
+.headerset h1{
+    font-size: 82px;
+}
+
+.oursevices{
+    padding: 100px 0px 60px;
+    height: 700px;
+}
+.oursevices h1{
+  margin: 80px 0px !important;
+  font-size: 50px;
+  font-weight: bold;
+}
+
+
+
+.rowsetting{
+  margin: 80px 0px !important;
+}
+.rowsetting p{
+  padding: 10px;
+  color: #6c757d !important;
+}
+.rowsetting h2{
+  margin-top:20px;
+  font-weight: bold;
+  font-size:30px; 
+}
+
+.portfolio{
+
+  height: 1100px;
+  width: 100%;
+  padding: 100px 0px 50px;
+}
+.portfolio h1{
+  font-size: 50px;
+  font-weight: bold;
+
+}
+.card{
+  margin-top: 40px;
+}
+
 .bgland{ 
     /* The image used */
     background-image: url("/static/cf.jpeg");
@@ -7,15 +90,13 @@
     /* Center and scale the image nicely */
     background-size: cover;
 }
+.slide{
+    margin-top:80px;
+    padding: 100px;
 
-.carousel-caption {
-    top: 50%;
-    transform: translateY(-50%);
-    text-transform: uppercase;
 
-    width: 200px;
-    height: auto;
 }
+
 
 
 
@@ -24,7 +105,7 @@
 }
 
 #flash{
-color: lightblue;
+  color: lightblue;
 
 }
 
@@ -54,19 +135,11 @@ ul {
 color:purple;
 }
 
-#profile{
-    color: royalblue;
-    left: 50%;
-    position: relative;
-}
-
-#Suggestions{
-    color: lightseagreen;
-}
 .profile_pic{
     width: 200px;
     height: auto;
 }
+
 .yelp-image{
     display: block;
 }
@@ -102,12 +175,6 @@ color:purple;
 button:focus {
     outline: none;
 }
-
-
-
-
-
-
 
 
 

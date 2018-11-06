@@ -1,13 +1,5 @@
 {% extends 'base.html' %}
 {% block content %}
- 
-    <a href="/homepage">
-      <button type="button" class="btn btn-outline-primary">Home</button>
-    </a>
- 
-    <a href="/logout">
-      <button type="button" class="btn btn-outline-info">Logout</button>
-    </a>
 
     <div id="profile">
       <img src="/static/uploads/{{ user_info.profile.filename }}" class="profile_pic" alt="image">

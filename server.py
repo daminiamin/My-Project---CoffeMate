@@ -1,4 +1,3 @@
-"""Sample Flask app for SQLAlchemy homework."""
 from geopy.geocoders import Nominatim #for long-lat
 from geopy import distance
 import requests #for api req
@@ -120,7 +119,6 @@ def send_email():
 
     email = create_message(recipient, subject, message)
     result = send_message(gmail, "me", email)
-    print(result)
 
     return "Email sent"
 ################################################################################
@@ -141,7 +139,7 @@ def authorize():
         # re-prompting the user for permission. Recommended for web server apps.
         access_type='offline',
         # Enable incremental authorization. Recommended as a best practice.
-        include_granted_scopes='true') #####??????????
+        include_granted_scopes='true')
 
     # Store the state so the callback can verify the auth server response.
     session['state'] = state
@@ -203,12 +201,22 @@ def clear_credentials():
   if 'credentials' in session:
     del session['credentials']
   return ('Credentials have been cleared.<br><br>')
+# ÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷ My Routes ÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷
 
 
-@app.route('/', methods=['GET'])
-def landing_page():
-    """Show landing page."""
-    return render_template('landing_page.html')
+
+@app.route('/')
+def main():
+    """Show Main page."""
+    return render_template("main.html")
+
+
+
+@app.route('/login')
+def login_page():
+    """Show login page."""
+    return render_template('login.html')
+
 
 @app.route('/login', methods=['POST']) 
 def login():
@@ -232,7 +240,14 @@ def login():
     else:
         flash("No such user")
 
-    return redirect("/")
+    return redirect("/login")
+
+
+@app.route('/signup')
+def signup():
+    """Show signup page."""
+    
+    return render_template("signup.html")
 
 
 @app.route('/set-up', methods=['POST'])
@@ -252,7 +267,7 @@ def set_up():
     if user:
         # if user.password == password:
         flash(" User already exists")
-        return redirect("/")
+        return redirect("/signup")
 
     else:
         session["fname"]=fname
@@ -323,7 +338,7 @@ def add_user():
     db.session.commit()
 
     # Make this image the user's profile pic
-    new_user.profile = add_profile_pic                  #????????????????
+    new_user.profile = add_profile_pic                 
 
     db.session.commit()
 
@@ -609,24 +624,6 @@ def delete_account():
 
 
 ##########Test Route##################
-
-
-
-@app.route('/test', methods=["GET"])
-def test():
-
-    # headers = {'Authorization': 'Bearer ' + yelp_api_key}
-
-    # payload = {'location': 'santa clara','term': 'Coffee Shop', 'limit': 5}
-
-    # response = requests.get(yelp_url+"/search",
-    #                         params=payload,
-    #                         headers=headers)
-    # data = response.json()
-
-
-    return render_template("test.html")
-
 
 
 ##########################
