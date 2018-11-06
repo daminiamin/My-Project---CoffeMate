@@ -1,33 +1,30 @@
 
 
 .main-bgimg{
-    background-image: url("/static/bg.jpg");
+    background-image: url("/static/cycle.jpg");
     background-size: 100% 100%;
     background-attachment: fixed;
     height:660px;    
 }
 
 
-.applogo{
+.applogo{     /*  1 font style  */
   font-size:180%;
   font-family: 'Monoton', cursive;
-
-
 }
 
-.d3{
-  border-radius: 200%;
-  height: 150px;
-  /*width: 150px;*/
-}
 
-body { font-family: "Raleway", sans-serif; }
-
-h1, h2, h3, h4, h5, h6 {
+h1, h2, h3, h4, h5, h6 {    /*  2nd font style */
   font-family: "Ubuntu", serif;
   font-weight:  700;
 }
 
+.d3{                 /*  three icons on main page */
+  border-radius: 200%;
+  height: 150px;
+}
+
+/*÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷ Headerset ÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷ */
 
 .headerset{
     padding-top: 250px;
@@ -40,7 +37,7 @@ h1, h2, h3, h4, h5, h6 {
 .headerset h1{
     font-size: 82px;
 }
-
+/*÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷ our servieces ÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷*/
 .oursevices{
     padding: 100px 0px 60px;
     height: 700px;
@@ -51,7 +48,7 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: bold;
 }
 
-
+/*÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷ rowsetting ÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷*/
 
 .rowsetting{
   margin: 80px 0px !important;
@@ -66,30 +63,13 @@ h1, h2, h3, h4, h5, h6 {
   font-size:30px; 
 }
 
-.portfolio{
+/*÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷*/
 
-  height: 1100px;
-  width: 100%;
-  padding: 100px 0px 50px;
-}
-.portfolio h1{
-  font-size: 50px;
-  font-weight: bold;
 
-}
 .card{
   margin-top: 40px;
 }
 
-.bgland{ 
-    /* The image used */
-    background-image: url("/static/cf.jpeg");
-
-    /* Full height */
-
-    /* Center and scale the image nicely */
-    background-size: cover;
-}
 .slide{
     margin-top:80px;
     padding: 100px;
@@ -98,20 +78,26 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 
+/*÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷ Suggestions  ÷÷÷÷÷÷÷÷÷÷÷÷*/
+.suggestions{
+
+  height: 1100px;
+  padding: 100px 0px 50px;
+  display: block;
+
+}
+.suggestions h1{
+  font-size: 50px;
+  font-weight: bold;
+
+
+}
+/*÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷*/
+
 
 
 #phone{
     display: none;
-}
-
-#flash{
-  color: lightblue;
-
-}
-
-h1{
-color: orange;
-
 }
 
 label{
@@ -139,11 +125,13 @@ color:purple;
     width: 200px;
     height: auto;
 }
-
+/*÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷ Yelp Suggestions÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷*/
 .yelp-image{
     display: block;
 }
 
+
+/*÷÷÷÷÷÷÷÷÷÷÷÷ Like Dislike Buttons CSS ÷÷÷÷÷÷÷÷÷÷*/
 
 .like-icon, .dislike-icon {
     color: #DDDDDD;
@@ -175,11 +163,7 @@ color:purple;
 button:focus {
     outline: none;
 }
-
-
-
-
-
+/*÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷Buttons÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷*/
 
 
 

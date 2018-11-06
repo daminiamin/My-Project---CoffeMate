@@ -13,12 +13,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" 
           integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway|Ubuntu:700">
+    <!-- Monton Font Style -->
     <link href="https://fonts.googleapis.com/css?family=Monoton" rel="stylesheet">
 
     <link rel="icon" href="/static/coffee.ico">
 
     <link rel="stylesheet" type="text/css" href="/static/style.css">
+
 
 
   </head>
@@ -38,30 +39,52 @@
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsenavbar">
                 <span class="navbar-toggler-icon"> </span>
             </button>
+
             <div class="collapse navbar-collapse" id="collapsenavbar">
               <ul class="navbar-nav ml-auto">
 
                   {% if session["user_id"] %}
 
                       <li class="nav-item">
+                          <a href="/connections" class="nav-link text-black">
+                            <button type="button"  style="margin: 5px;" class="btn btn-info">Match</button>
+                          </a>  
+                      </li>
+
+                      {% if 'credentials' not in session %}
+                        <li class="nav-item">
+                          <a href="/authorize" class="nav-link text-black">
+                            <button type="button"  style="margin: 5px;" class="btn btn-info">Authorize</button>
+                          </a>
+                        </li>
+                      {% endif %}
+
+                      <li class="nav-item">
                         <a href="/homepage" class="nav-link text-black">
-                        <button type="button"  style="margin: 5px;"class="btn btn-info">Home</button></a>
+                          <button type="button"  style="margin: 5px;" class="btn btn-info">Home</button>
+                        </a>
                       </li>
 
                       <li class="nav-item">
                         <a href="/logout" class="nav-link text-black">
-                        <button type="button"  style="margin: 5px;"class="btn btn-info">Log out</button></a>
+                          <button type="button"  style="margin: 5px;" class="btn btn-info">Log out</button>
+                        </a>
                       </li>
                       
                       <li>
-                        <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Account
-                        </button>
-                          <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#">Change info</a>
-                            <a class="dropdown-item" href="#">Profile Pic</a>
-                            <a class="dropdown-item" href="#">Delete A/C</a>
-                          </div>
+
+                        <div class="dropdown">
+                          <a href="/logout" class="nav-link text-black">
+                            <button type="button" style="margin: 5px;" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Account
+                            </button>
+                            <div class="dropdown-menu">
+                              <a class="dropdown-item" href="#">Change info</a>
+                              <a class="dropdown-item" href="#">Profile Pic</a>
+                              <a class="dropdown-item" href="#">Delete A/C</a>
+                            </div>
+                          </a>
+                        </div>                      
                       </li>
                   {% else %}
 
