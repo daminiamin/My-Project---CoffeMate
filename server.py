@@ -602,8 +602,6 @@ def connections():
     
     liked_back = db.session.query(User).join(Like.likes_user).filter(Like.likes_user_id.in_(liked_ids),Like.liked_user_id==c_user_id).all()
 
-    
-
 
     return render_template("connections.html",liked_back=liked_back)
 
@@ -623,14 +621,11 @@ def delete_account():
     """ delete account"""
 
 
-##########Test Route##################
 
 
 ##########################
 
 if __name__ == "__main__":
-    # app.debug = False
-    app.debug = False
 
     connect_to_db(app)
     DebugToolbarExtension(app)

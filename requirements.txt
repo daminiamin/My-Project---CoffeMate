@@ -24,6 +24,7 @@ pkg-resources==0.0.0
 psycopg2==2.7.5
 pyasn1==0.4.4
 pyasn1-modules==0.2.2
+req==1.0.0
 requests==2.20.0
 requests-oauthlib==1.0.0
 rsa==4.0

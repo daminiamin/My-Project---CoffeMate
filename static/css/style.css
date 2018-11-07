@@ -4,9 +4,15 @@
     background-image: url("/static/cycle.jpg");
     background-size: 100% 100%;
     background-attachment: fixed;
+    padding: 100px 0px 100px;
+
     height:660px;    
 }
 
+.btn-info{
+
+  background-color: #091514;
+}
 
 .applogo{     /*  1 font style  */
   font-size:180%;
