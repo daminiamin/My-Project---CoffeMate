@@ -1,0 +1,152 @@
+
+
+.main-bgimg{
+    background-image: url("/static/cycle.jpg");
+    background-size: 100% 100%;
+    background-attachment: fixed;
+    height:660px;    
+}
+
+
+.applogo{     /*  1 font style  */
+  font-size:180%;
+  font-family: 'Monoton', cursive;
+}
+
+
+h1, h2, h3, h4, h5, h6 {    /*  2nd font style */
+  font-family: "Ubuntu", serif;
+  font-weight:  700;
+}
+
+.d3{                 /*  three icons on main page */
+  border-radius: 200%;
+  height: 150px;
+}
+
+/*÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷ Headerset ÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷ */
+
+.headerset{
+    padding-top: 250px;
+    box-sizing: border-box;
+
+}
+.headerset h2{
+    font-size: 32px;
+}
+.headerset h1{
+    font-size: 82px;
+}
+/*÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷ our servieces ÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷*/
+.oursevices{
+    padding: 100px 0px 60px;
+    height: 700px;
+}
+.oursevices h1{
+  margin: 80px 0px !important;
+  font-size: 50px;
+  font-weight: bold;
+}
+
+/*÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷ rowsetting ÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷*/
+
+.rowsetting{
+  margin: 80px 0px !important;
+}
+.rowsetting p{
+  padding: 10px;
+  color: #6c757d !important;
+}
+.rowsetting h2{
+  margin-top:20px;
+  font-weight: bold;
+  font-size:30px; 
+}
+
+/*÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷*/
+
+
+
+.slide{
+    margin-top:80px;
+    padding: 100px;
+
+
+}
+
+
+/*÷÷÷÷÷÷÷÷÷÷÷÷*/
+
+
+
+#phone{
+    display: none;
+}
+
+label{
+
+    color: silver;
+    font-weight: bold;
+}
+
+ul {
+    display: inline-block;
+}
+
+#firstname{
+
+   text-shadow: 3px 3px pink;
+   font-weight: bold;
+
+}
+
+.greet {
+color:purple;
+}
+
+.profile_pic{
+    width: 200px;
+    height: auto;
+}
+/*÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷ Yelp Suggestions÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷*/
+.yelp-image{
+    display: block;
+}
+
+
+/*÷÷÷÷÷÷÷÷÷÷÷÷ Like Dislike Buttons CSS ÷÷÷÷÷÷÷÷÷÷*/
+
+.like-icon, .dislike-icon {
+    color: #DDDDDD;
+}
+
+.like-icon:hover {
+    color: #b57293;
+}
+
+.liked {
+    color: #85144b;
+    -webkit-text-fill-color: #85144b;
+}
+
+.dislike-icon:hover {
+    color: #585858;
+}
+
+.disliked {
+    color: #111111;
+    -webkit-text-fill-color: #111111;
+}
+
+.like-button, .disliked-button {
+    border: none;
+    background-color: none;
+}
+
+button:focus {
+    outline: none;
+}
+/*÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷Buttons÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷*/
+
+
+

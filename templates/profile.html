@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-
+<!-- 
     <div id="profile">
       <img src="/static/uploads/{{ user_info.profile.filename }}" class="profile_pic" alt="image">
       <h4 class="user-name">{{user_info.fname}} {{user_info.lname}}</h4>
@@ -13,45 +13,67 @@
         <li>{{hobbie.hobbie_name}}</li>
         {% endfor %}</p>
         <p>About me : {{user_info.yourself}}</p>
-      </div>
-    
-    <button
-      id="like"
-      data-liked-user-id='{{ user_info.user_id }}'
-      type="button"
-      class="like-button {% if status == 'liked' %} liked{% endif %}">
-        <i class="fas fa-heart fa-3x like-icon"></i>
-    </button>
-    
-    <button
-      id="dislike"
-      data-disliked-user-id='{{ user_info.user_id }}'
-      type="button"
-      class="disliked-button {% if status == 'disliked' %} disliked{% endif %}">
-        <i class="fas fa-times-circle fa-3x dislike-icon"></i>
-    </button>
+      </div> -->
 
-    <button id="send-email" type="button" data-toggle="modal" 
-            data-target="#emailModal" style="background: white; border-color: white; margin:0">
-        <span class="fa-layers fa-fw fa-3x">
-          <i class="fas fa-envelope"></i>
-        </span>
-    </button>
-    <!-- Show contact of user -->
-    <p id="phone"> {{user_info.contact_no}}</p>
+
+    <link rel="stylesheet" type="text/css" href="/static/css/home.css">
+      <div class="backimg">
+        <div class="ano-profile">
+            <img src="/static/uploads/{{ user_info.profile.filename }}" >
+            <div class="profile_text">
+              <h2>{{user_info.fname}} {{user_info.lname}}</h2>
+              <h3>{{user_info.city}},{{user_info.state}}</h3>
+              <p>
+
+                  <button
+                    id="like"
+                    data-liked-user-id='{{ user_info.user_id }}'
+                    type="button"
+                    class="like-button {% if status == 'liked' %} liked{% endif %}">
+                      <i class="fas fa-heart fa-3x like-icon"></i>
+                  </button>
+                  
+                  <button
+                    id="dislike"
+                    data-disliked-user-id='{{ user_info.user_id }}'
+                    type="button"
+                    class="disliked-button {% if status == 'disliked' %} disliked{% endif %}">
+                      <i class="fas fa-times-circle fa-3x dislike-icon"></i>
+                  </button>
+
+                  <button id="send-email" type="button" data-toggle="modal" 
+                          data-target="#emailModal" style="background: white; border-color: white; margin:0">
+                      <span class="fa-layers fa-fw fa-3x">
+                        <i class="fas fa-envelope"></i>
+                      </span>
+                  </button>
+                  <!-- Show contact of user -->
+                  <p id="phone"> Contact No: {{user_info.contact_no}}</p>
+
+                </p>
+            </div>
+        </div>
+      </div>
+
+
+
+
   <!-- Show Yelp sugestions -->
   <div id="show-api-data">
       {% if yelp_suggestions != [] %}
         <h1>Coffee Shops,You can visit </h1>
         <!-- print Yelp API coffee Shops suggestions -->
         {% for business in yelp_suggestions['businesses'] %}
+          <div>
             <ul> <a href={{business['url']}}>{{ business['name'] }}</a>
                 <img class="yelp-image" src="{{business['image_url']}}" height="200" width="200">
                 <li>Location: {{business["location"]["address1"]}}, {{business["location"]["city"]}}</li>
                 <!-- <li>{{ business.keys() }}</li> -->
             </ul>
+          </div>
         {% endfor %}
-      {% else %}
+      {% else %}<p>You don't have suggestions</p>
+                <p> Because</p>
         <span>You Are Too Far From Each Other</span>
       {% endif %}
   </div>

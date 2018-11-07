@@ -2,20 +2,28 @@
 {% block content %}
 
 
+    <link rel="stylesheet" type="text/css" href="/static/css/home.css">
     <h1>Your Match</h1>
 
+    <section class="portfolio suggestions bg-light">
+        <div class="container text-center">
+            <div class="row">
 
-     {% for person in liked_back %}
-              <li><div style="width: 18em;">
-                    <img src="/static/uploads{{ person.profile.filename }}" class="p" alt="image">
-                      <h5 class="card-title">{{person.fname}}</h5>
-                      <p class="card-text">{{person.lname}}
-                                          {{person.city}}
-                                          {{person.age}}</p>
-                      <a href="/profile/{{person.user_id}}" class="btn btn-primary">Visit profile</a>
-                  </div>
-                   
-              </li>
-    {% endfor %}
+               {% for person in liked_back %}
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-10 d-block m-auto">
+                      <div class="card">
+                        <img src="/static/uploads/{{ person.profile.filename }}" class="card-img img-fluid">
+                        <div class="card-body">
+                            <h2 class="card-title"> {{person.fname}} {{person.lname}}</h2>
+                            <p class="card-text"> City: {{person.city}}</p>
+                            <p class="card-text"> Age: {{person.age}}</p>
+                            <a href="/profile/{{person.user_id}}" class="btn btn-primary">Visit profile</a>          
+                        </div>
+                      </div>
+                    </div>
+                {% endfor %}
+              </div>                
+        </div>
+    </section>
 
 {% endblock %}

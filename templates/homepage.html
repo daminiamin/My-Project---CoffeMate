@@ -1,9 +1,21 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="homepage-bg">
     
-       
-      
+  <link rel="stylesheet" type="text/css" href="/static/css/home.css">
+    <div class="backimg">
+        <div class="profile">
+            <img src="/static/uploads/{{ user_info.profile.filename }}" >
+            <div class="profile_text">
+              <h2>{{user_info.fname}} {{user_info.lname}}</h2>
+              <h3>{{user_info.city}},{{user_info.state}}</h3>
+              <p> </p>
+            </div>
+
+        </div>
+
+    </div>
+
+      <!-- 
         <h4 class = "greet">
           <p> <img src="/static/uploads/{{ user_info.profile.filename }}" class="profile_pic" alt="image">
           Hi,{{user_info.fname}} {{user_info.lname}}</p>
@@ -19,59 +31,36 @@
         <li>{{ hobbie.hobbie_name }}</li>
         {% endfor %}
         </ul>
+ -->
+<div>
+    <!-- profile porfolio -->
+      <form action="/profile">
 
-<!-- profile porfolio -->
-  <form action="/profile">
+        <section class="portfolio suggestions bg-light">
 
-    <section class="portfolio suggestions bg-light">
+          <div class="container text-center">
+            <h1> Suggestions</h1>
+              <p> For You</p>
+                <div class="row">
+                {% for person in get_allobjects %}
 
-      <div class="container text-center">
-        <h1> Suggestions</h1>
-          <p> For You</p>
-            <div class="row">
-            {% for person in get_allobjects %}
+                      <div class="col-lg-4 col-md-4 col-sm-12 col-10 d-block m-auto">
+                        <div class="card">
 
-                <div class="col-lg-4 col-md-4 col-sm-12 col-10 d-block m-auto">
-                  <div class="card">
-
-                    <img src="/static/uploads/{{person.profile.filename }}" class="card-img img-fluid">
-                      <div class="card-body">
-                        <h2 class="card-title"> {{person.fname}} {{person.lname}}</h2>
-                        <p class="card-text"> City: {{person.city}}</p>
-                        <p class="card-text"> Age: {{person.age}}</p>
-                        <a href="/profile/{{person.user_id}}" class="btn btn-primary">Visit profile</a>          
+                          <img src="/static/uploads/{{person.profile.filename }}" class="card-img img-fluid">
+                          <div class="card-body">
+                            <h2 class="card-title"> {{person.fname}} {{person.lname}}</h2>
+                            <p class="card-text"> City: {{person.city}}</p>
+                            <p class="card-text"> Age: {{person.age}}</p>
+                            <a href="/profile/{{person.user_id}}" class="btn btn-primary">Visit profile</a>          
+                          </div>
+                        </div>
                       </div>
-      
-                  </div>
-                </div>
-          {% endfor %}
-          </div>
+                {% endfor %}
+              </div>
 
-        </div>
-    </section>
-    </form>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                 
-            
-     
-  
-
+            </div>
+        </section>
+        </form>
+ </div>                  
 {% endblock %}
