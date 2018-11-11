@@ -1,7 +1,7 @@
 
 
 .main-bgimg{
-    background-image: url("/static/cycle.jpg");
+    background-image: url("/static/bean.jpg");
     background-size: 100% 100%;
     background-attachment: fixed;
     padding: 100px 0px 100px;
@@ -23,7 +23,9 @@
 h1, h2, h3, h4, h5, h6 {    /*  2nd font style */
   font-family: "Ubuntu", serif;
   font-weight:  700;
+
 }
+
 
 .d3{                 /*  three icons on main page */
   border-radius: 200%;
@@ -39,9 +41,11 @@ h1, h2, h3, h4, h5, h6 {    /*  2nd font style */
 }
 .headerset h2{
     font-size: 32px;
+    color: #0bcfd2;
 }
 .headerset h1{
     font-size: 82px;
+    color: #0bcfd2;
 }
 /*÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷ our servieces ÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷÷*/
 .oursevices{
@@ -76,6 +80,7 @@ h1, h2, h3, h4, h5, h6 {    /*  2nd font style */
 .slide{
     margin-top:80px;
     padding: 100px;
+
 
 
 }

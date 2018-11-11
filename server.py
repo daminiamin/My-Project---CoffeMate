@@ -379,10 +379,10 @@ def homepage():
                     #get users not in excluded_ids(likes,dislikes,c.Uid)
 
 
-    if len(all_interest_users) > 3:
-        #get3 users who has same hobbie
+    if len(all_interest_users) > 6:
+        #get6 users who has same hobbie
 
-        all_interest_users = sample(all_interest_users, 3)
+        all_interest_users = sample(all_interest_users, 6)
 
     return render_template("homepage.html", user_info=user_info,
                                             get_allobjects=all_interest_users)
