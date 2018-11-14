@@ -24,33 +24,33 @@
               <h2>{{user_info.fname}} {{user_info.lname}}</h2>
               <h3>{{user_info.city}},{{user_info.state}}</h3>
               <p>
+                <!-- Like Button -->
+                <button
+                  id="like"
+                  data-liked-user-id='{{ user_info.user_id }}'
+                  type="button"
+                  class="like-button {% if status == 'liked' %} liked{% endif %}">
+                    <i class="fas fa-heart fa-3x like-icon"></i>
+                </button>
+                <!-- Dislike Button -->
+                <button
+                  id="dislike"
+                  data-disliked-user-id='{{ user_info.user_id }}'
+                  type="button"
+                  class="disliked-button {% if status == 'disliked' %} disliked{% endif %}">
+                    <i class="fas fa-times-circle fa-3x dislike-icon"></i>
+                </button>
+                <!-- Mail Button -->
+                <button id="send-email" type="button" data-toggle="modal" 
+                        data-target="#emailModal" class="email">
+                    <span class="fa-layers fa-fw fa-3x">
+                      <i class="fas fa-envelope"></i>
+                    </span>
+                </button>
+                <!-- Show contact of user -->
+                <p id="phone"> Contact No: {{user_info.contact_no}}</p>
 
-                  <button
-                    id="like"
-                    data-liked-user-id='{{ user_info.user_id }}'
-                    type="button"
-                    class="like-button {% if status == 'liked' %} liked{% endif %}">
-                      <i class="fas fa-heart fa-3x like-icon"></i>
-                  </button>
-                  
-                  <button
-                    id="dislike"
-                    data-disliked-user-id='{{ user_info.user_id }}'
-                    type="button"
-                    class="disliked-button {% if status == 'disliked' %} disliked{% endif %}">
-                      <i class="fas fa-times-circle fa-3x dislike-icon"></i>
-                  </button>
-
-                  <button id="send-email" type="button" data-toggle="modal" 
-                          data-target="#emailModal" style="background: white; border-color: white; margin:0">
-                      <span class="fa-layers fa-fw fa-3x">
-                        <i class="fas fa-envelope"></i>
-                      </span>
-                  </button>
-                  <!-- Show contact of user -->
-                  <p id="phone"> Contact No: {{user_info.contact_no}}</p>
-
-                </p>
+              </p>
             </div>
         </div>
       </div>
@@ -59,47 +59,31 @@
 
 
   <!-- Show Yelp sugestions -->
+<div id="show-api-data">
+
+  {% if yelp_suggestions != [] %}
+    <h1>Coffee Shops,You can visit </h1>
+    {% for business in yelp_suggestions['businesses'] %}
+
+      <div class="jumbotron">
+        <img class="yelp-image" src="{{business['image_url']}}" height="200" width="200">
+        <h1 class="display-4" ><a class="shops" href="{{business['url']}}">{{ business['name'] }}</a></h1>
+        <p class="lead"><a>Location: {{business["location"]["address1"]}}, {{business["location"]["city"]}}</a></p>
+        <hr class="my-4">
+        <a class="btn btn- visit-profile btn-lg" href="{{business['url']}}" role="button">Visit</a>
+        
+      </div>
+    {% endfor %}
 
 
+    {% else %}<p>You don't have suggestions</p>
+                  <p> Because</p>
+          <span>You Are Too Far From Each Other</span>
 
-    <!-- <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-      {% if yelp_suggestions != [] %}
-          <h1>Coffee Shops,You can visit </h1>
-              {% for business in yelp_suggestions['businesses'] %}
+  {% endif %}
+</div>
 
-                <ol class="carousel-indicators">
-                  <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-                  <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-                  <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-                </ol>
-                <div class="carousel-inner">
-                    <div class="carousel-item active">
-                      <img class="d-block w-100" src="{{business['image_url']}}" alt="First slide">
-                    </div>
-                    <p><a href={{business['url']}}>{{ business['name'] }}</a></p>
-                    <p>Location: {{business["location"]["address1"]}}, {{business["location"]["city"]}}</p>
-                    <p></p>
-                </div>
-                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Previous</span>
-                </a>
-                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Next</span>
-                </a>
-            {% endfor %}
-
-            {% else %}
-                <p>You don't have suggestions</p>
-                <p> Because</p>
-                <span>You Are Too Far From Each Other</span>
-    {% endif %}
-    </div> -->
-
-
-
-
+<!-- 
   <div id="show-api-data">
         {% if yelp_suggestions != [] %}
           <h1>Coffee Shops,You can visit </h1>
@@ -116,7 +100,7 @@
                   <p> Because</p>
           <span>You Are Too Far From Each Other</span>
         {% endif %}
-  </div>
+  </div> -->
 <!-- ********************************************************************** --> 
   <!-- Email modal -->
   <div class="modal fade" id="emailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

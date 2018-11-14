@@ -233,7 +233,6 @@ def login():
     if user:
         if user.password == hash_pwd:
             session["user_id"] = user.user_id
-            flash("Logged in")
             return redirect(f"/homepage")
         else:
             flash("Incorrect password")
