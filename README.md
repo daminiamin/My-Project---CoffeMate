@@ -80,7 +80,7 @@ $ python3 -i model.py
 
 ## Authors
 
-* ** Damini Amin ** - *Initial work* -
+**Damini Amin** :sparkles: - *Initial work* -
 
 ## Acknowledgments
 
