@@ -80,7 +80,7 @@ $ python3 -i model.py
 
 ## Authors
 
-* :gift_heart: ** Damini Amin ** :gift_heart:- *Initial work* -
+* ** Damini Amin ** - *Initial work* -
 
 ## Acknowledgments
 
