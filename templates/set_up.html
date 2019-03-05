@@ -1,11 +1,13 @@
 {% extends 'base.html' %}
 {% block content %}
 
-    <h1>SetUp Your Profile</h1>
-    <form action="/add-user" method="POST" enctype=multipart/form-data>
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+
+    <form action="/add-user" method="POST" class="setup-lbl" enctype=multipart/form-data>
+        <h1>SetUp Your Profile</h1>
 
         <div>
-          <label>Age:
+          <label>Age
             <select name="age"  = "select">
              {% for n in range(18,101) %}
               <option value={{n}}>{{n}}</option>
@@ -24,7 +26,7 @@
         </div>
 
         <div>
-          <label>Interested In
+          <label>Interested in
             <select name="interested_in">
               <option value="F">F</option>
               <option value="M">M</option> 
@@ -33,29 +35,29 @@
         </div>
 
         <div>
-          <label>Your City:
+          <label>Your city
             <input type="text" name="city" required>
           </label>
         </div>
 
         <div>
-          <label>State:
+          <label>State
             <input type="text" name="state" required>
           </label>
         </div>
         <div>
-          <label>Your Contact info:
+          <label>Contact number
             <input type="number" name="contact" required>
           </label>
         </div>
 
         <div>
-          <label>Occupation:
+          <label>Occupation
             <input type="text" name="occupation" required>
           </label>
         </div>
         <div>
-          <label>What's Your Hobbie:
+          <label>What's your Hobbie
             {% for hobbie in hobbies_info %}
               <input type="checkbox" name="hobbie" value="{{hobbie.hobbie_id}}">{{hobbie.hobbie_name}}
             {% endfor %}
@@ -63,14 +65,14 @@
         </div>
 
         <div>
-          <label>Write about yourself:
-            <textarea rows="4" cols="50" name = "aboutme" required>
+          <label>About me
+            <textarea rows="1" cols="50" name = "aboutme" required>
             </textarea>
           </label>
         </div>
         <!-- upload profile picture -->
       <div class="upload_pic">
-        <label>Upload Your Photo</label>
+        <label>Upload profile photo</label>
         <input type="file"name=file required>
       </div>
       <br>

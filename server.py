@@ -274,8 +274,6 @@ def set_up():
         session["email"]=email
         session["password"]=hash_pwd
 
-        flash("create you profile ")
-
         # query the database to get all hobbie objects from the Hobbie table
         hobbies_info = Hobbie.query.all()
 
